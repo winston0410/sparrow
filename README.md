@@ -23,7 +23,7 @@ module.exports = {
     require('sparrow')({
       transformationList: [
         {
-          target: ['$(a){font-size: 4px}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
+          target: ['$(selector){font-size: 4px}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
           transformationOption: [{
             value: ['font-size: 4rem'], //Value for replacing, appending or prepending target value. Can be omitted if the operation: 'remove'
             operation: 'replace' // remove, replace, before, after
@@ -43,6 +43,55 @@ module.exports = {
 
 .bar{
   font-size: 4rem;
+}
+```
+
+<!-- Remove -->
+```css
+/* Original Input */
+.foo {
+    font-size: 4px;
+    width: 100%;
+    margin: 10%;
+    font-weight: 700;
+}
+
+.bar{
+  font-size: 4px;
+  height: 10%;
+}
+```
+
+```javascript
+//postcss.config.js or other files you use to config PostCSS
+
+module.exports = {
+  plugins: [
+    //Other plugins...
+
+    require('sparrow')({
+      transformationList: [
+        {
+          target: ['$(selector){$(prop): $(value)%}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
+          transformationOption: [{
+            operation: 'remove' // remove, replace, before, after
+          }]
+        }
+      ]
+    })
+  ]
+}
+```
+
+```css
+/* After the transformation of sparrow*/
+.foo {
+  font-size: 4px;
+  font-weight: 700;
+}
+
+.bar{
+  font-size: 4px;
 }
 ```
 
