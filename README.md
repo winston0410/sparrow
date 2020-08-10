@@ -1,6 +1,6 @@
 # Sparrow
 
-A PostCSS plugin that helps you remove, replace, append or prepend CSS declarations without the need of writing another PostCSS plugin.  Avoid the hassle of learning new APIs again for using a new PostCSS plugin. 
+A PostCSS plugin that helps you remove, replace, append or prepend CSS declarations without the need of writing another PostCSS plugin.  Avoid the hassle of learning new APIs again for using a new PostCSS plugin.
 
 ```css
 /* Original Input */
@@ -45,12 +45,6 @@ module.exports = {
   font-size: 4rem;
 }
 ```
-
-## Problem
-
-[RFS](https://github.com/twbs/rfs) is a great unit resizing engine that helps you build responsive CSS layout, but writing `rfs()` everywhere manually is a pain in the ass.
-
-With this plugin, you just need to declare rules you want to apply `rfs()` to, and it will do the heavy-lifting for you.
 
 ## Made in Hong Kong :free: :free:
 
