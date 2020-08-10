@@ -51,7 +51,7 @@ describe('Test sparrow', function () {
       const options = {
         transformationList: [
           {
-            target: ['$(a){font-size: 20px}'], // css declaration with fill varible
+            targets: ['a{font-size: 20px}'], // css declaration with fill varible
             transformationOption: [{
               operation: 'remove' // append, prepend, insertBefore, insertAfter, replace
             }]
@@ -69,7 +69,7 @@ describe('Test sparrow', function () {
         })
 
       options.transformationList.forEach((transformation, index) => {
-        transformation.target.forEach((target) => {
+        transformation.targets.forEach((target) => {
           // Remove placeholder from target element
           const targetDeclData = postcss.parse(target, { from: undefined }).first.first
 

@@ -1,8 +1,8 @@
-# Sparrow
+# Sparrow 
 
-<!-- [![Known Vulnerabilities](https://snyk.io/test/github/winston0410/sparrow/badge.svg?targetFile=package.json)](https://snyk.io/test/github/winston0410/sparrow?targetFile=package.json) [![Maintainability](https://api.codeclimate.com/v1/badges/54626992beea73efcadf/maintainability)](https://codeclimate.com/github/winston0410/sparrow/maintainability) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/4f5f78d7736d4ed7b8439c2096bdc38f)](https://www.codacy.com/manual/winston0410/sparrow?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=winston0410/sparrow&amp;utm_campaign=Badge_Grade) -->
+<!-- [![Known Vulnerabilities](https://snyk.io/test/github/winston0410/sparrow/badge.svg?targetFile=package.json)](https://snyk.io/test/github/winston0410/sparrow?targetFile=package.json) [![Maintainability](https://api.codeclimate.com/v1/badges/54626992beea73efcadf/maintainability)](https://codeclimate.com/github/winston0410/sparrow/maintainability) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/4f5f78d7736d4ed7b8439c2096bdc38f)](https://www.codacy.com/manual/winston0410/sparrow?utm_source=github.com&utm_medium=referral&utm_content=winston0410/sparrow&utm_campaign=Badge_Grade) -->
 
-A PostCSS plugin that helps you remove, replace, append or prepend CSS declarations without the need of writing another PostCSS plugin.  Avoid the hassle of learning new APIs again for using a new PostCSS plugin.
+ A PostCSS plugin that helps you remove, replace, append or prepend CSS declarations without the need of writing another PostCSS plugin. Avoid the hassle of learning new APIs again for using a new PostCSS plugin.
 
 ```css
 /* Original Input */
@@ -25,9 +25,9 @@ module.exports = {
     require('sparrow')({
       transformationList: [
         {
-          target: ['$(selector){font-size: 4px}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
+          targets: ['$(selector){font-size: 4px}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
           transformationOption: [{
-            value: ['font-size: 4rem'], //Value for replacing, appending or prepending target value. Can be omitted if the operation: 'remove'
+            values: ['font-size: 4rem'], //Value for replacing, appending or prepending target value. Can be omitted if the operation: 'remove'
             operation: 'replace' // remove, replace, before, after
           }]
         }
@@ -46,10 +46,11 @@ module.exports = {
 .bar{
   font-size: 4rem;
 }
-```
+``` 
 
 <!-- Remove -->
-```css
+
+ ```css
 /* Original Input */
 .foo {
     font-size: 4px;
@@ -74,7 +75,7 @@ module.exports = {
     require('sparrow')({
       transformationList: [
         {
-          target: ['$(selector){$(prop): $(value)%}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
+          targets: ['$(selector){$(prop): $(value)%}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
           transformationOption: [{
             operation: 'remove' // remove, replace, before, after
           }]
@@ -125,9 +126,9 @@ module.exports = {
     require('sparrow')({
       transformationList: [
         {
-          target: ['$(a){font-size: 20px}'], // css declaration with placeholders
+          targets: ['$(a){font-size: 20px}'], // css declaration with placeholders
           transformationOption: [{
-            value: ['font-size: 19px'], //Value for replacing, appending or prepending target value. Can be omitted if the operation: 'remove'
+            values: ['font-size: 19px'], //Value for replacing, appending or prepending target value. Can be omitted if the operation: 'remove'
             operation: 'after' // remove, replace, before, after
           }]
         }
