@@ -1,28 +1,6 @@
-const chalk = require('chalk')
 const postcss = require('postcss')
 
 const isPlaceholderVariable = (value) => /^\$\(\w*\)/g.test(value)
-
-const log = (msg, msgType, silentConsole) => {
-  if (silentConsole === true) {
-    return
-  }
-
-  switch (msgType) {
-    case 'success':
-      console.log(chalk.green(msg))
-      break
-
-    case 'notice':
-      console.log(chalk.cyan(msg))
-      break
-
-    case 'error':
-      console.log(chalk.red(msg))
-      break
-    default:
-  }
-}
 
 // const hasMatchingTarget = (decl, targetDecl) => {
 //   const declDataList = [decl.parent.selector, decl.prop, decl.value]
@@ -54,8 +32,11 @@ const transformDeclaration = (decl, transformationDecls) => {
 }
 const isIdenticalArray = (declArray, targetDeclArray) => declArray.toString() === targetDeclArray.toString()
 
+const isMatchingDecl = (decl, targetDecl) => targetDecl.every((value, index) => isPlaceholderVariable(value) || value === decl[index])
+
 module.exports = {
   isPlaceholderVariable,
   transformDeclaration,
-  isIdenticalArray
+  isIdenticalArray,
+  isMatchingDecl
 }

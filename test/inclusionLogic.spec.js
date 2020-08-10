@@ -6,7 +6,7 @@ const expect = chai.expect
 chai.use(require('chai-match'))
 
 describe('Test sparrow', function () {
-  let css, beforeTransformation, afterTransformation
+  let css, beforeTransformation, afterTransformation, declarationTemplate
 
   // const result = postcss
   //   .parse('$(selector){$(prop): $(value)px;}', { from: undefined })
@@ -38,11 +38,11 @@ describe('Test sparrow', function () {
     postcss
       .parse(css, { from: undefined })
       .walkDecls((decl) => {
-        beforeTransformation.push({
-          selector: decl.parent.selector,
-          prop: decl.prop,
-          value: decl.value
-        })
+        declarationTemplate = `${decl.parent.selector}{${decl.prop}: ${decl.value}}`
+
+        beforeTransformation.push(
+          declarationTemplate
+        )
       })
   })
 
@@ -53,8 +53,7 @@ describe('Test sparrow', function () {
           {
             target: ['$(a){font-size: 20px}'], // css declaration with fill varible
             transformationOption: [{
-              value: ['font-size: 19px'],
-              operation: 'after' // append, prepend, insertBefore, insertAfter, replace
+              operation: 'remove' // append, prepend, insertBefore, insertAfter, replace
             }]
           }
         ]
@@ -65,21 +64,19 @@ describe('Test sparrow', function () {
       ])
         .process(css, { from: undefined }).then(result => {
           result.root.walkDecls((decl) => {
-            afterTransformation.push({
-              selector: decl.parent.selector,
-              prop: decl.prop,
-              value: decl.value
-            })
+            afterTransformation.push(declarationTemplate)
           })
         })
 
-      console.log(afterTransformation)
+      options.transformationList.forEach((transformation, index) => {
+        transformation.target.forEach((target) => {
+          // Remove placeholder from target element
+          const targetDeclData = postcss.parse(target, { from: undefined }).first.first
 
-      // beforeTransformation.forEach((decl, index) => {
-      //
-      //     expect(decl.value).to.equal(afterTransformation[index].value)
-      //
-      // })
+          // Expect target cannot be found in trasnformedData
+          expect(target).to.equal(afterTransformation[index].value)
+        })
+      })
     })
   })
 
