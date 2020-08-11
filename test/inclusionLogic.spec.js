@@ -122,7 +122,7 @@ describe('Test sparrow', function() {
           //
           // console.log(targetDeclData);
 
-          console.log(transformation.transformationOption);
+          // console.log(transformation.transformationOption);
 
           // Expect target cannot be found in transformedData
           expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.false

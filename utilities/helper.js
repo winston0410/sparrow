@@ -9,13 +9,13 @@ const transformDeclaration = ({ decl, newDecl }) => {
   }
 
   const transformationDict = {
-    replace: decl.replaceWith,
-    before: decl.before,
-    after: decl.after
+    replace: (value) => decl.replaceWith(value),
+    before: (value) => decl.before(value),
+    after: (value) => decl.after(value)
   }
 
   newDecl.values.forEach((value) => {
-    transformationDict[newDecl.operation](value)
+    transformationDict[newDecl.operation](value);
   })
 }
 
