@@ -8,7 +8,7 @@ const chai = require('chai')
 const expect = chai.expect
 chai.use(require('chai-match'))
 
-describe('Test sparrow', function () {
+describe('Test sparrow', function() {
   let css, beforeTransformation, afterTransformation, declarationTemplate
 
   // const result = postcss
@@ -17,7 +17,7 @@ describe('Test sparrow', function () {
   //     console.log(decl)
   //   })
 
-  beforeEach(function () {
+  beforeEach(function() {
     css = `p #hello{
       font-size: 18px;
       margin: rfs(10rem);
@@ -39,29 +39,31 @@ describe('Test sparrow', function () {
     afterTransformation = []
 
     postcss
-      .parse(css, { from: undefined })
+      .parse(css, {
+        from: undefined
+      })
       .walkDecls((decl) => {
         beforeTransformation.push([decl.parent.selector, decl.prop, decl.value])
       })
   })
 
-  describe('if operation is remove', function () {
-    it('should remove the target declaration', async function () {
+  describe('if operation is remove', function() {
+    it('should remove the target declaration', async function() {
       const options = {
-        transformationList: [
-          {
-            targets: ['a{font-size: 20px}'], // css declaration with fill varible
-            transformationOption: [{
-              operation: 'remove' // append, prepend, insertBefore, insertAfter, replace
-            }]
-          }
-        ]
+        transformationList: [{
+          targets: ['a{font-size: 20px}'], // css declaration with fill varible
+          transformationOption: [{
+            operation: 'remove' // append, prepend, insertBefore, insertAfter, replace
+          }]
+        }]
       }
 
       await postcss([
-        sparrow(options)
-      ])
-        .process(css, { from: undefined }).then(result => {
+          sparrow(options)
+        ])
+        .process(css, {
+          from: undefined
+        }).then(result => {
           result.root.walkDecls((decl) => {
             afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
           })
@@ -69,7 +71,9 @@ describe('Test sparrow', function () {
 
       options.transformationList.forEach((transformation, index) => {
         transformation.targets.forEach((target, index) => {
-          const targetDecl = postcss.parse(target, { from: undefined }).first.first
+          const targetDecl = postcss.parse(target, {
+            from: undefined
+          }).first.first
 
           const targetDeclData = [targetDecl.parent.selector, targetDecl.prop, targetDecl.value]
 
@@ -80,20 +84,53 @@ describe('Test sparrow', function () {
     })
   })
 
-  describe('if operation is replace', function () {
-    it('should replace the target declaration', function () {
+  describe('if operation is replace', function() {
+    it('should replace the target declaration', async function() {
+
+      const options = {
+        transformationList: [{
+          targets: ['$(){font-size: $()}'], // css declaration with fill varible
+          transformationOption: [{
+            values: ['$(){display: none}'],
+            operation: 'replace' // append, prepend, insertBefore, insertAfter, replace
+          }]
+        }]
+      }
+
+      await postcss([
+          sparrow(options)
+        ])
+        .process(css, {
+          from: undefined
+        }).then(result => {
+          result.root.walkDecls((decl) => {
+            afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
+          })
+        })
+
+      options.transformationList.forEach((transformation, index) => {
+        transformation.targets.forEach((target, index) => {
+          const targetDecl = postcss.parse(target, {
+            from: undefined
+          }).first.first
+
+          const targetDeclData = [targetDecl.parent.selector, targetDecl.prop, targetDecl.value]
+
+          // Expect target cannot be found in transformedData
+          expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.false
+        })
+      })
+    })
+  })
+
+  describe('if operation is before', function() {
+    it('should insert a declaration before target declaration', function() {
 
     })
   })
 
-  describe('if operation is before', function () {
-    it('should insert a declaration before target declaration', function () {
-
-    })
-  })
-
-  describe('if operation is after', function () {
-    it('should insert a declaration after target declaration', function () {
+  describe('if operation is after', function() {
+    it('should insert a declaration after target declaration', function() {
 
     })
   })
