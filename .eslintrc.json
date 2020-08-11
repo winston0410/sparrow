@@ -5,11 +5,13 @@
     "es2020": true
   },
   "plugins": [
-    "mocha"
+    "mocha",
+    "chai-expect"
   ],
   "extends": [
     "standard",
-    "plugin:mocha/recommended"
+    "plugin:mocha/recommended",
+    "plugin:chai-expect/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 2020,
