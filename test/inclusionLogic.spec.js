@@ -1,5 +1,8 @@
 const postcss = require('postcss')
 const sparrow = require('../index.js')
+const {
+  isMatchingDecl
+} = require('../utilities/helper.js')
 
 const chai = require('chai')
 const expect = chai.expect
@@ -38,11 +41,7 @@ describe('Test sparrow', function () {
     postcss
       .parse(css, { from: undefined })
       .walkDecls((decl) => {
-        declarationTemplate = `${decl.parent.selector}{${decl.prop}: ${decl.value}}`
-
-        beforeTransformation.push(
-          declarationTemplate
-        )
+        beforeTransformation.push([decl.parent.selector, decl.prop, decl.value])
       })
   })
 
@@ -64,17 +63,18 @@ describe('Test sparrow', function () {
       ])
         .process(css, { from: undefined }).then(result => {
           result.root.walkDecls((decl) => {
-            afterTransformation.push(declarationTemplate)
+            afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
           })
         })
 
       options.transformationList.forEach((transformation, index) => {
-        transformation.targets.forEach((target) => {
-          // Remove placeholder from target element
-          const targetDeclData = postcss.parse(target, { from: undefined }).first.first
+        transformation.targets.forEach((target, index) => {
+          const targetDecl = postcss.parse(target, { from: undefined }).first.first
+
+          const targetDeclData = [targetDecl.parent.selector, targetDecl.prop, targetDecl.value]
 
           // Expect target cannot be found in trasnformedData
-          expect(target).to.equal(afterTransformation[index].value)
+          expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.false
         })
       })
     })
