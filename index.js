@@ -3,7 +3,8 @@ const postcss = require('postcss')
 const {
   isPlaceholderVariable,
   transformDeclaration,
-  isMatchingDecl
+  isMatchingDecl,
+  convertPlaceholdersToValues
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('sparrow', ({
@@ -33,9 +34,11 @@ module.exports = postcss.plugin('sparrow', ({
           // If two arrays match, run transformation
           if (isMatchingDecl(declDataList, targetDeclDataList)) {
             transformation.transformationOption.forEach((item) => {
+              //Revert placeholder here to value's in decl
               transformDeclaration({
                 decl: decl,
-                newDecl: item
+                //Convert item into array with same data order as declDataList
+                newDecl: convertPlaceholdersToValues(declDataList, item)
               })
             })
           }

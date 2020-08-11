@@ -116,9 +116,9 @@ describe('Test sparrow', function() {
 
           const targetDeclData = [targetDecl.parent.selector, targetDecl.prop, targetDecl.value]
 
-          // console.log(beforeTransformation);
-          //
-          // console.log(afterTransformation);
+          console.log(beforeTransformation);
+
+          console.log(afterTransformation);
           //
           // console.log(targetDeclData);
 

@@ -21,8 +21,14 @@ const transformDeclaration = ({ decl, newDecl }) => {
 
 const isMatchingDecl = (decl, targetDecl) => targetDecl.every((value, index) => isPlaceholderVariable(value) || value === decl[index])
 
+const convertPlaceholdersToValues = (declData, replacmentDeclData) => {
+
+  return
+}
+
 module.exports = {
   isPlaceholderVariable,
   transformDeclaration,
-  isMatchingDecl
+  isMatchingDecl,
+  convertPlaceholdersToValues
 }
