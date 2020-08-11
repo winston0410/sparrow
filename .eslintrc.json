@@ -6,12 +6,14 @@
   },
   "plugins": [
     "mocha",
-    "chai-expect"
+    "chai-expect",
+    "chai-friendly"
   ],
   "extends": [
     "standard",
     "plugin:mocha/recommended",
-    "plugin:chai-expect/recommended"
+    "plugin:chai-expect/recommended",
+    "plugin:chai-friendly/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 2020,
