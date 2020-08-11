@@ -89,9 +89,9 @@ describe('Test sparrow', function() {
 
       const options = {
         transformationList: [{
-          targets: ['$(){font-size: $()}'], // css declaration with fill varible
+          targets: ['$(a){font-size: $(a)}'], // css declaration with fill varible
           transformationOption: [{
-            values: ['$(){display: none}'],
+            values: ['$(a){display: none}'],
             operation: 'replace' // append, prepend, insertBefore, insertAfter, replace
           }]
         }]
@@ -116,8 +116,18 @@ describe('Test sparrow', function() {
 
           const targetDeclData = [targetDecl.parent.selector, targetDecl.prop, targetDecl.value]
 
+          // console.log(beforeTransformation);
+          //
+          // console.log(afterTransformation);
+          //
+          // console.log(targetDeclData);
+
+          console.log(transformation.transformationOption);
+
           // Expect target cannot be found in transformedData
           expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.false
+          //Expect replacement value to be found in transformedData
+          expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.true
         })
       })
     })
