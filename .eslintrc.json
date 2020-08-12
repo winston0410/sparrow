@@ -7,7 +7,8 @@
   "plugins": [
     "mocha",
     "chai-expect",
-    "chai-friendly"
+    "chai-friendly",
+    "const-immutable"
   ],
   "extends": [
     "standard",
@@ -25,6 +26,7 @@
     "prefer-object-spread": 1,
     "no-var": 2,
     "no-param-reassign": 2,
-    "prefer-const": 2
+    "prefer-const": 2,
+    "const-immutable/no-mutation": 2
   }
 }
