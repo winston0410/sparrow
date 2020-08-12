@@ -22,6 +22,8 @@
   "rules": {
     "no-unused-vars": 1,
     "no-unreachable": 0,
-    "prefer-object-spread": 1
+    "prefer-object-spread": 1,
+    "no-var": 2,
+    "no-param-reassign": 2
   }
 }
