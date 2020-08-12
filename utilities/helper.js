@@ -32,7 +32,7 @@ const transformDeclaration = ({ decl, newDecl }) => {
     // For non remove operation
 
     values.forEach((value, i) => {
-      const replacedValue = convertPlaceholdersToValues(value)
+      const replacedValue = convertPlaceholdersToValues({ decl: parseDecl(decl), newDecl: parseDecl(value) })
       transformationDict[newDecl.operation](replacedValue)
     })
   }
@@ -40,9 +40,10 @@ const transformDeclaration = ({ decl, newDecl }) => {
 
 const isMatchingDecl = (decl, targetDecl) => targetDecl.every((value, index) => isPlaceholderVariable(value) || value === decl[index])
 
-const convertPlaceholdersToValues = (value) => {
-  // console.log('Convert placeholder running')
-  // console.log(value)
+const convertPlaceholdersToValues = ({ decl, newDecl }) => {
+  console.log('Convert placeholder running')
+  console.log(decl)
+  console.log(newDecl)
   // if (transformationOptions.operation === 'remove') {
   //   return transformationOptions
   // }
