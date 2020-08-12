@@ -31,11 +31,9 @@ const transformDeclaration = ({ decl, newDecl }) => {
       // Need to check if decl exist, before decl.remove(), to prevent multiple remove operation
     }
 
-    // For non remove operation
-
     values.forEach((value, i) => {
       const replacedValue = convertPlaceholdersToValues({ decl: listDeclData(decl), newDecl: parseDecl(value) })
-      transformationDict[newDecl.operation](replacedValue)
+      transformationDict[operation](replacedValue)
     })
   }
 }
