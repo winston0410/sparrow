@@ -27,6 +27,9 @@
     "no-var": 2,
     "no-param-reassign": 2,
     "prefer-const": 2,
-    "const-immutable/no-mutation": 2
+    "const-immutable/no-mutation": 2,
+    "prefer-rest-params": 2,
+    "prefer-template": 2,
+    "prefer-spread": 2
   }
 }
