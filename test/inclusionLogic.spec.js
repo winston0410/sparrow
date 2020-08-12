@@ -98,20 +98,20 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformationList.forEach((transformation, index) => {
-        transformation.targets.forEach((target, index) => {
+      options.transformationList.forEach(({ targets, transformationOption }, index) => {
+        targets.forEach((target, index) => {
           const targetDeclData = parseDecl(target)
 
-          // console.log(beforeTransformation)
-          //
-          // console.log(targetDeclData)
+          if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
+            expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
+            // Check if value of the same index in the afterTransformation array equals to replacementValue
 
-          console.log(afterTransformation)
-
-          // Expect target cannot be found in transformedData
-          expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.false
-          // Expect replacement value to be found in transformedData
-          expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.true
+            transformationOption.forEach(({ values, operation }) => {
+              values.forEach((value) => {
+                expect(isMatchingDecl(afterTransformation[index], parseDecl(value))).to.be.true
+              })
+            })
+          }
         })
       })
     })
