@@ -13,7 +13,7 @@ const parseDecl = (decl) => {
 }
 
 const transformDeclaration = ({ decl, newDecl }) => {
-  console.log(newDecl)
+  // console.log(newDecl)
 
   const transformationDict = {
     replace: (value) => decl.replaceWith(value),
@@ -42,8 +42,8 @@ const transformDeclaration = ({ decl, newDecl }) => {
 const isMatchingDecl = (decl, targetDecl) => targetDecl.every((value, index) => isPlaceholderVariable(value) || value === decl[index])
 
 const convertPlaceholdersToValues = (value) => {
-  console.log('Convert placeholder running')
-  console.log(value)
+  // console.log('Convert placeholder running')
+  // console.log(value)
   // if (transformationOptions.operation === 'remove') {
   //   return transformationOptions
   // }

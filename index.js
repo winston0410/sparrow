@@ -23,14 +23,8 @@ module.exports = postcss.plugin('sparrow', ({
         transformation.targets.forEach((target) => {
           // Check if placeholder is missed.  Fill in if needed
 
-          const targetDecl = postcss
-            .parse(target, {
-              from: undefined
-            })
-            .first.first
-
           const declDataList = [decl.parent.selector, decl.prop, decl.value]
-          const targetDeclDataList = [targetDecl.parent.selector, targetDecl.prop, targetDecl.value]
+          const targetDeclDataList = parseDecl(target)
 
           // If two arrays match, run transformation
           if (isMatchingDecl(declDataList, targetDeclDataList)) {
