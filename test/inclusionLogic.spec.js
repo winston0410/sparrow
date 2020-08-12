@@ -1,7 +1,8 @@
 const postcss = require('postcss')
 const sparrow = require('../index.js')
 const {
-  isMatchingDecl
+  isMatchingDecl,
+  parseDecl
 } = require('../utilities/helper.js')
 
 const chai = require('chai')
@@ -65,11 +66,7 @@ describe('Test sparrow', function () {
 
       options.transformationList.forEach((transformation, index) => {
         transformation.targets.forEach((target, index) => {
-          const targetDecl = postcss.parse(target, {
-            from: undefined
-          }).first.first
-
-          const targetDeclData = [targetDecl.parent.selector, targetDecl.prop, targetDecl.value]
+          const targetDeclData = parseDecl(target)
 
           // Expect target cannot be found in trasnformedData
           expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.false
@@ -103,11 +100,7 @@ describe('Test sparrow', function () {
 
       options.transformationList.forEach((transformation, index) => {
         transformation.targets.forEach((target, index) => {
-          const targetDecl = postcss.parse(target, {
-            from: undefined
-          }).first.first
-
-          const targetDeclData = [targetDecl.parent.selector, targetDecl.prop, targetDecl.value]
+          const targetDeclData = parseDecl(target)
 
           // console.log(beforeTransformation)
           //
