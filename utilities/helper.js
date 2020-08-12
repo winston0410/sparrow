@@ -6,6 +6,8 @@ const listDeclData = (decl) => {
   return [decl.parent.selector, decl.prop, decl.value]
 }
 
+const stringifyDecl = (declArray) => `${declArray[0]}{${declArray[1]}: ${declArray[2]}}`
+
 const parseDecl = (decl) => {
   const parsedDecl = postcss
     .parse(decl, {
@@ -33,7 +35,7 @@ const transformDeclaration = ({ decl, newDecl }) => {
 
     values.forEach((value, i) => {
       const replacedValue = convertPlaceholdersToValues({ decl: listDeclData(decl), newDecl: parseDecl(value) })
-      transformationDict[operation](replacedValue)
+      transformationDict[operation](stringifyDecl(replacedValue))
     })
   }
 }
