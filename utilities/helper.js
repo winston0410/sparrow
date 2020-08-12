@@ -2,6 +2,11 @@ const postcss = require('postcss')
 
 const isPlaceholderVariable = (value) => /^\$\(\w*\)/g.test(value)
 
+const listDeclData = (decl) => {
+  console.log(decl)
+  return [decl.parent.selector, decl.prop, decl.value]
+}
+
 const parseDecl = (decl) => {
   const parsedDecl = postcss
     .parse(decl, {
@@ -9,7 +14,7 @@ const parseDecl = (decl) => {
     })
     .first.first
 
-  return [parsedDecl.parent.selector, parsedDecl.prop, parsedDecl.value]
+  return listDeclData(parsedDecl)
 }
 
 const transformDeclaration = ({ decl, newDecl }) => {
@@ -32,7 +37,7 @@ const transformDeclaration = ({ decl, newDecl }) => {
     // For non remove operation
 
     values.forEach((value, i) => {
-      const replacedValue = convertPlaceholdersToValues({ decl: parseDecl(decl), newDecl: parseDecl(value) })
+      const replacedValue = convertPlaceholdersToValues({ decl: listDeclData(decl), newDecl: parseDecl(value) })
       transformationDict[newDecl.operation](replacedValue)
     })
   }
