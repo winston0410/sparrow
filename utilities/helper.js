@@ -21,11 +21,10 @@ const transformDeclaration = ({ decl, newDecl }) => {
     after: (value) => decl.after(value)
   }
 
-  newDecl.forEach(({ operation, values }) => {
+  for (const [index, { operation, values }] of newDecl.entries()) {
     if (operation === 'remove') {
       decl.remove()
-
-      // Need to continue loop here of operation equal remove
+      continue
 
       // Need to check if decl exist, before decl.remove(), to prevent multiple remove operation
     }
@@ -36,7 +35,7 @@ const transformDeclaration = ({ decl, newDecl }) => {
       const replacedValue = convertPlaceholdersToValues(value)
       transformationDict[newDecl.operation](replacedValue)
     })
-  })
+  }
 }
 
 const isMatchingDecl = (decl, targetDecl) => targetDecl.every((value, index) => isPlaceholderVariable(value) || value === decl[index])

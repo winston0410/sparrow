@@ -11,12 +11,6 @@ chai.use(require('chai-match'))
 describe('Test sparrow', function () {
   let css, beforeTransformation, afterTransformation, declarationTemplate
 
-  // const result = postcss
-  //   .parse('$(selector){$(prop): $(value)px;}', { from: undefined })
-  //   .walkDecls((decl) => {
-  //     console.log(decl)
-  //   })
-
   beforeEach(function () {
     css = `p #hello{
       font-size: 18px;
