@@ -3,7 +3,6 @@ const postcss = require('postcss')
 const isPlaceholderVariable = (value) => /^\$\(\w*\)/g.test(value)
 
 const listDeclData = (decl) => {
-  console.log(decl)
   return [decl.parent.selector, decl.prop, decl.value]
 }
 
@@ -18,8 +17,6 @@ const parseDecl = (decl) => {
 }
 
 const transformDeclaration = ({ decl, newDecl }) => {
-  // console.log(newDecl)
-
   const transformationDict = {
     replace: (value) => decl.replaceWith(value),
     before: (value) => decl.before(value),
@@ -45,31 +42,7 @@ const transformDeclaration = ({ decl, newDecl }) => {
 
 const isMatchingDecl = (decl, targetDecl) => targetDecl.every((value, index) => isPlaceholderVariable(value) || value === decl[index])
 
-const convertPlaceholdersToValues = ({ decl, newDecl }) => {
-  console.log('Convert placeholder running')
-  console.log(decl)
-  console.log(newDecl)
-  // if (transformationOptions.operation === 'remove') {
-  //   return transformationOptions
-  // }
-  //
-  // console.log(declData)
-  //
-  // transformationOptions.values = transformationOptions.values.map((value) => {
-  //   const replacementDecl = postcss
-  //     .parse(value, {
-  //       from: undefined
-  //     })
-  //     .first.first
-  //
-  //   const replacementDeclData = [replacementDecl.parent.selector, replacementDecl.prop, replacementDecl.value]
-  //     .map((data, index) => isPlaceholderVariable(data) ? declData[index] : data)
-  //
-  //   return `${replacementDeclData[0]}{${replacementDeclData[1]}: ${replacementDeclData[2]}}`
-  // })
-  //
-  // return transformationOptions
-}
+const convertPlaceholdersToValues = ({ decl, newDecl }) => newDecl.map((value, index) => isPlaceholderVariable(value) ? decl[index] : value)
 
 module.exports = {
   isPlaceholderVariable,
