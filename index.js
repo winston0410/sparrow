@@ -33,14 +33,20 @@ module.exports = postcss.plugin('sparrow', ({
 
           // If two arrays match, run transformation
           if (isMatchingDecl(declDataList, targetDeclDataList)) {
+            // console.log(decl)
+
+            transformDeclaration({ decl: decl, newDecl: transformation.transformationOption })
+
             transformation.transformationOption.forEach((item) => {
-              //Revert placeholder here to value's in decl
-              transformDeclaration({
-                decl: decl,
-                //Convert item into array with same data order as declDataList
-                newDecl: convertPlaceholdersToValues(declDataList, item)
-              })
+
             })
+
+            // Revert placeholder here to value's in decl
+            // transformDeclaration({
+            //   decl: decl,
+            //   // Convert item into array with same data order as declDataList
+            //   newDecl: convertPlaceholdersToValues(declDataList, item)
+            // })
           }
         })
       })
