@@ -24,6 +24,7 @@
     "no-unreachable": 0,
     "prefer-object-spread": 1,
     "no-var": 2,
-    "no-param-reassign": 2
+    "no-param-reassign": 2,
+    "prefer-const": 2
   }
 }
