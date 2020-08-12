@@ -2,6 +2,16 @@ const postcss = require('postcss')
 
 const isPlaceholderVariable = (value) => /^\$\(\w*\)/g.test(value)
 
+const parseDecl = (decl) => {
+  const parsedDecl = postcss
+    .parse(decl, {
+      from: undefined
+    })
+    .first.first
+
+  return [parsedDecl.parent.selector, parsedDecl.prop, parsedDecl.value]
+}
+
 const transformDeclaration = ({ decl, newDecl }) => {
   console.log(newDecl)
 
@@ -60,5 +70,6 @@ module.exports = {
   isPlaceholderVariable,
   transformDeclaration,
   isMatchingDecl,
-  convertPlaceholdersToValues
+  convertPlaceholdersToValues,
+  parseDecl
 }

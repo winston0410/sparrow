@@ -4,7 +4,8 @@ const {
   isPlaceholderVariable,
   transformDeclaration,
   isMatchingDecl,
-  convertPlaceholdersToValues
+  convertPlaceholdersToValues,
+  parseDecl
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('sparrow', ({
