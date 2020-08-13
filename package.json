@@ -1,7 +1,7 @@
 {
-  "name": "postcss-rfs-autopilot",
-  "version": "1.1.1",
-  "description": "A PostCSS plugin that will automagically mark your CSS up with rfs() for RFS",
+  "name": "sparrow",
+  "version": "0.1.0",
+  "description": "A PostCSS plugin that helps you remove, replace, append or prepend CSS declarations without the need of writing another PostCSS plugin.",
   "keywords": [
     "postcss",
     "css",
@@ -15,10 +15,9 @@
   },
   "author": "Hugo Sum <hugosum.dev@protonmail.com>",
   "license": "MIT",
-  "repository": "winston0410/postcss-rfs-autopilot",
+  "repository": "winston0410/sparrow",
   "dependencies": {
-    "postcss": "^7.0.32",
-    "rfs": "^9.0.3"
+    "postcss": "^7.0.32"
   },
   "devDependencies": {
     "@logux/eslint-config": "^33.0.0",
@@ -27,7 +26,6 @@
     "chai": "^4.2.0",
     "chai-arrays": "^2.2.0",
     "chai-match": "^1.1.1",
-    "chalk": "^4.1.0",
     "eslint": "^7.5.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-chai-expect": "^2.2.0",
@@ -50,8 +48,5 @@
   },
   "engines": {
     "node": ">=8.0.0"
-  },
-  "jest": {
-    "testEnvironment": "node"
   }
 }
