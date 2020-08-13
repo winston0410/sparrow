@@ -2,12 +2,14 @@ const postcss = require('postcss')
 const sparrow = require('../index.js')
 const {
   isMatchingDecl,
-  parseDecl
+  parseDecl,
+  convertPlaceholdersToValues
 } = require('../utilities/helper.js')
 
 const chai = require('chai')
 const expect = chai.expect
 chai.use(require('chai-match'))
+chai.use(require('chai-arrays'))
 
 describe('Test sparrow', function () {
   let css, beforeTransformation, afterTransformation, declarationTemplate
@@ -147,6 +149,13 @@ describe('Test sparrow', function () {
           if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
             expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
             // Check if the length of afterTransformation array has increased
+            transformationOption.forEach(({ values, operation }) => {
+              values.forEach((value) => {
+                const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: parseDecl(value) })
+
+                expect(afterTransformation).to.include(appendedValue)
+              })
+            })
           }
         })
       })
@@ -154,8 +163,47 @@ describe('Test sparrow', function () {
   })
 
   describe('if operation is after', function () {
-    it('should insert a declaration after target declaration', function () {
+    it('should insert a declaration after target declaration', async function () {
+      const options = {
+        transformationList: [{
+          targets: ['$(a){font-size: $(a)}'], // css declaration with fill varible
+          transformationOption: [{
+            values: ['$(a){display: none}'],
+            operation: 'before' // append, prepend, insertBefore, insertAfter, replace
+          }]
+        }]
+      }
 
+      await postcss([
+        sparrow(options)
+      ])
+        .process(css, {
+          from: undefined
+        }).then(result => {
+          result.root.walkDecls((decl) => {
+            afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
+          })
+        })
+
+      options.transformationList.forEach(({ targets, transformationOption }, index) => {
+        targets.forEach((target, index) => {
+          const targetDeclData = parseDecl(target)
+
+          if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
+            expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
+            // Check if the length of afterTransformation array has increased
+            expect(beforeTransformation.length).to.not.equal(afterTransformation.length)
+
+            transformationOption.forEach(({ values, operation }) => {
+              values.forEach((value) => {
+                const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: parseDecl(value) })
+
+                expect(afterTransformation).to.include(appendedValue)
+              })
+            })
+          }
+        })
+      })
     })
   })
 })
