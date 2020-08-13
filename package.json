@@ -5,9 +5,7 @@
   "keywords": [
     "postcss",
     "css",
-    "postcss-plugin",
-    "rfs",
-    "rfs-auto-pilot"
+    "postcss-plugin"
   ],
   "scripts": {
     "test": "npx nyc npx mocha",
