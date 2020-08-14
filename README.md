@@ -128,6 +128,8 @@ Input this command in terminal and download this PostCSS plugin.
 npm i sparrow
 ```
 
+As this plugin requires PostCSS to parse your CSS first, you need to include it after plugins like [postcss-nested](https://www.npmjs.com/package/postcss-nested) or [postcss-mixins](https://www.npmjs.com/package/postcss-mixins).
+
 ```javascript
 //postcss.config.js or other files you use to config PostCSS
 
