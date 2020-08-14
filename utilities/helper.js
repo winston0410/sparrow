@@ -1,22 +1,13 @@
 const postcss = require('postcss')
+const R = require('ramda')
 
 const isPlaceholderVariable = (value) => /^\$\(\w*\)/g.test(value)
 
-const listDeclData = (decl) => {
-  return [decl.parent.selector, decl.prop, decl.value]
-}
+const listDeclData = (decl) => [decl.parent.selector, decl.prop, decl.value]
 
 const stringifyDecl = (declArray) => `${declArray[0]}{${declArray[1]}: ${declArray[2]}}`
 
-const parseDecl = (decl) => {
-  const parsedDecl = postcss
-    .parse(decl, {
-      from: undefined
-    })
-    .first.first
-
-  return listDeclData(parsedDecl)
-}
+const parseDecl = (decl) => postcss.parse(decl, { from: undefined }).first.first
 
 const transformDeclaration = ({ decl, newDecl }) => {
   const transformationDict = {
@@ -34,7 +25,7 @@ const transformDeclaration = ({ decl, newDecl }) => {
     }
 
     values.forEach((value, i) => {
-      const replacedValue = convertPlaceholdersToValues({ decl: listDeclData(decl), newDecl: parseDecl(value) })
+      const replacedValue = convertPlaceholdersToValues({ decl: listDeclData(decl), newDecl: R.pipe(parseDecl, listDeclData)(value) })
       transformationDict[operation](stringifyDecl(replacedValue))
     })
   }
@@ -49,5 +40,6 @@ module.exports = {
   transformDeclaration,
   isMatchingDecl,
   convertPlaceholdersToValues,
-  parseDecl
+  parseDecl,
+  listDeclData
 }

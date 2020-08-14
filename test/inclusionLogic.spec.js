@@ -3,8 +3,10 @@ const sparrow = require('../index.js')
 const {
   isMatchingDecl,
   parseDecl,
-  convertPlaceholdersToValues
+  convertPlaceholdersToValues,
+  listDeclData
 } = require('../utilities/helper.js')
+const R = require('ramda')
 
 const chai = require('chai')
 const expect = chai.expect
@@ -68,7 +70,7 @@ describe('Test sparrow', function () {
 
       options.transformationList.forEach((transformation, index) => {
         transformation.targets.forEach((target, index) => {
-          const targetDeclData = parseDecl(target)
+          const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
           // Expect target cannot be found in trasnformedData
           expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.false
@@ -102,7 +104,7 @@ describe('Test sparrow', function () {
 
       options.transformationList.forEach(({ targets, transformationOption }, index) => {
         targets.forEach((target, index) => {
-          const targetDeclData = parseDecl(target)
+          const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
           if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
             expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
@@ -110,7 +112,7 @@ describe('Test sparrow', function () {
 
             transformationOption.forEach(({ values, operation }) => {
               values.forEach((value) => {
-                expect(isMatchingDecl(afterTransformation[index], parseDecl(value))).to.be.true
+                expect(isMatchingDecl(afterTransformation[index], R.pipe(parseDecl, listDeclData)(value))).to.be.true
               })
             })
           }
@@ -144,14 +146,14 @@ describe('Test sparrow', function () {
 
       options.transformationList.forEach(({ targets, transformationOption }, index) => {
         targets.forEach((target, index) => {
-          const targetDeclData = parseDecl(target)
+          const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
           if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
             expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
             // Check if the length of afterTransformation array has increased
             transformationOption.forEach(({ values, operation }) => {
               values.forEach((value) => {
-                const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: parseDecl(value) })
+                const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: R.pipe(parseDecl, listDeclData)(value) })
 
                 // expect(afterTransformation).to.be.containing(appendedValue)
               })
@@ -187,7 +189,7 @@ describe('Test sparrow', function () {
 
       options.transformationList.forEach(({ targets, transformationOption }, index) => {
         targets.forEach((target, index) => {
-          const targetDeclData = parseDecl(target)
+          const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
           if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
             expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
@@ -196,7 +198,7 @@ describe('Test sparrow', function () {
 
             transformationOption.forEach(({ values, operation }) => {
               values.forEach((value) => {
-                const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: parseDecl(value) })
+                const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: R.pipe(parseDecl, listDeclData)(value) })
 
                 // expect(afterTransformation).to.include(appendedValue)
               })

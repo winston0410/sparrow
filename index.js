@@ -1,9 +1,11 @@
 const postcss = require('postcss')
+const R = require('ramda')
 
 const {
   transformDeclaration,
   isMatchingDecl,
-  parseDecl
+  parseDecl,
+  listDeclData
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('sparrow', ({
@@ -21,8 +23,8 @@ module.exports = postcss.plugin('sparrow', ({
         transformation.targets.forEach((target) => {
           // Check if placeholder is missed.  Fill in if needed
 
-          const declDataList = [decl.parent.selector, decl.prop, decl.value]
-          const targetDeclDataList = parseDecl(target)
+          const declDataList = listDeclData(decl)
+          const targetDeclDataList = R.pipe(parseDecl, listDeclData)(target)
 
           // If two arrays match, run transformation
           if (isMatchingDecl(declDataList, targetDeclDataList)) {
