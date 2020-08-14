@@ -155,8 +155,6 @@ describe('Test sparrow', function () {
               values.forEach((value) => {
                 const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: R.pipe(parseDecl, listDeclData)(value) })
 
-                console.log(afterTransformation)
-
                 // expect(afterTransformation).to.be.containing(appendedValue)
               })
             })
@@ -202,7 +200,6 @@ describe('Test sparrow', function () {
               values.forEach((value) => {
                 const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: R.pipe(parseDecl, listDeclData)(value) })
 
-                console.log(afterTransformation)
                 // expect(afterTransformation).to.include(appendedValue)
               })
             })
