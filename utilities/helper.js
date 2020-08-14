@@ -5,7 +5,7 @@ const isPlaceholderVariable = (value) => /^\$\(\w*\)/g.test(value)
 
 const listDeclData = (decl) => [decl.parent.selector, decl.prop, decl.value]
 
-const stringifyDecl = (declArray) => `${declArray[0]}{${declArray[1]}: ${declArray[2]}}`
+const stringifyDecl = (declArray) => `${declArray[1]}: ${declArray[2]};`
 
 const parseDecl = (decl) => postcss.parse(decl, { from: undefined }).first.first
 
