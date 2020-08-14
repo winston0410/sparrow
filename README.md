@@ -22,7 +22,7 @@ module.exports = {
   plugins: [
     //Other plugins...
 
-    require('sparrow')({
+    require('postcss-sparrow')({
       transformationList: [
         {
           targets: ['$(selector){font-size: 4px}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
@@ -46,7 +46,7 @@ module.exports = {
 .bar{
   font-size: 4rem;
 }
-``` 
+```
 
 <!-- Remove -->
 
@@ -72,7 +72,7 @@ module.exports = {
   plugins: [
     //Other plugins...
 
-    require('sparrow')({
+    require('postcss-sparrow')({
       transformationList: [
         {
           targets: ['$(selector){$(prop): $(value)%}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
@@ -123,7 +123,7 @@ module.exports = {
   plugins: [
     //Other plugins...
 
-    require('sparrow')({
+    require('postcss-sparrow')({
       transformationList: [
         {
           targets: ['$(a){font-size: 20px}'], // css declaration with placeholders
