@@ -25,7 +25,8 @@ const transformDeclaration = ({ decl, newDecl }) => {
     }
 
     values.forEach((value, i) => {
-      R.pipe(convertPlaceholdersToValues, stringifyDecl, transformationDict[operation])({ decl: listDeclData(decl), newDecl: R.pipe(parseDecl, listDeclData)(value) })
+      const runConversion = R.pipe(convertPlaceholdersToValues, stringifyDecl, transformationDict[operation])
+      runConversion({ decl: listDeclData(decl), newDecl: R.pipe(parseDecl, listDeclData)(value) })
     })
   }
 }
