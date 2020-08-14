@@ -51,7 +51,7 @@ describe('Test sparrow', function () {
       const options = {
         transformationList: [{
           targets: ['a{font-size: 20px}'], // css declaration with fill varible
-          transformationOption: [{
+          transformations: [{
             operation: 'remove' // append, prepend, insertBefore, insertAfter, replace
           }]
         }]
@@ -84,7 +84,7 @@ describe('Test sparrow', function () {
       const options = {
         transformationList: [{
           targets: ['$(a){font-size: $(a)}'], // css declaration with fill varible
-          transformationOption: [{
+          transformations: [{
             values: ['$(a){display: none}'],
             operation: 'replace' // append, prepend, insertBefore, insertAfter, replace
           }]
@@ -102,7 +102,7 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformationList.forEach(({ targets, transformationOption }, index) => {
+      options.transformationList.forEach(({ targets, transformations }, index) => {
         targets.forEach((target, index) => {
           const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
@@ -110,7 +110,7 @@ describe('Test sparrow', function () {
             expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
             // Check if value of the same index in the afterTransformation array equals to replacementValue
 
-            transformationOption.forEach(({ values, operation }) => {
+            transformations.forEach(({ values, operation }) => {
               values.forEach((value) => {
                 expect(isMatchingDecl(afterTransformation[index], R.pipe(parseDecl, listDeclData)(value))).to.be.true
               })
@@ -126,7 +126,7 @@ describe('Test sparrow', function () {
       const options = {
         transformationList: [{
           targets: ['$(a){font-size: $(a)}'], // css declaration with fill varible
-          transformationOption: [{
+          transformations: [{
             values: ['$(a){display: none}'],
             operation: 'before' // append, prepend, insertBefore, insertAfter, replace
           }]
@@ -144,14 +144,14 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformationList.forEach(({ targets, transformationOption }, index) => {
+      options.transformationList.forEach(({ targets, transformations }, index) => {
         targets.forEach((target, index) => {
           const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
           if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
             expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
             // Check if the length of afterTransformation array has increased
-            transformationOption.forEach(({ values, operation }) => {
+            transformations.forEach(({ values, operation }) => {
               values.forEach((value) => {
                 const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: R.pipe(parseDecl, listDeclData)(value) })
 
@@ -169,7 +169,7 @@ describe('Test sparrow', function () {
       const options = {
         transformationList: [{
           targets: ['$(a){font-size: $(a)}'], // css declaration with fill varible
-          transformationOption: [{
+          transformations: [{
             values: ['$(a){display: none}'],
             operation: 'before' // append, prepend, insertBefore, insertAfter, replace
           }]
@@ -187,7 +187,7 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformationList.forEach(({ targets, transformationOption }, index) => {
+      options.transformationList.forEach(({ targets, transformations }, index) => {
         targets.forEach((target, index) => {
           const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
@@ -196,7 +196,7 @@ describe('Test sparrow', function () {
             // Check if the length of afterTransformation array has increased
             expect(beforeTransformation.length).to.not.equal(afterTransformation.length)
 
-            transformationOption.forEach(({ values, operation }) => {
+            transformations.forEach(({ values, operation }) => {
               values.forEach((value) => {
                 const appendedValue = convertPlaceholdersToValues({ decl: beforeTransformation[index], newDecl: R.pipe(parseDecl, listDeclData)(value) })
 

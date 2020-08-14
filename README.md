@@ -26,7 +26,7 @@ module.exports = {
       transformationList: [
         {
           targets: ['$(selector){font-size: 4px}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
-          transformationOption: [{
+          transformations: [{
             values: ['font-size: 4rem'], //Value for replacing, appending or prepending target value. Can be omitted if the operation: 'remove'
             operation: 'replace' // remove, replace, before, after
           }]
@@ -76,7 +76,7 @@ module.exports = {
       transformationList: [
         {
           targets: ['$(selector){$(prop): $(value)%}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
-          transformationOption: [{
+          transformations: [{
             operation: 'remove' // remove, replace, before, after
           }]
         }
@@ -141,7 +141,7 @@ module.exports = {
       transformationList: [
         {
           targets: ['$(a){font-size: 20px}'], // css declaration with placeholders
-          transformationOption: [{
+          transformations: [{
             values: ['font-size: 19px'], //Value for replacing, appending or prepending target value. Can be omitted if the operation: 'remove'
             operation: 'after' // remove, replace, before, after
           }]
