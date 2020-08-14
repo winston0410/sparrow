@@ -8,7 +8,7 @@ const {
   listDeclData
 } = require('./utilities/helper.js')
 
-module.exports = postcss.plugin('sparrow', ({
+module.exports = postcss.plugin('postcss-sparrow', ({
   transformationList,
   silentConsole
 }) => {
