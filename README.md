@@ -104,7 +104,19 @@ This plugin is made with love by a Hong Konger.
 
 ## Placeholder syntax
 
-TODO
+For PostCSS parser to parse CSS rules properly and allow wildcard selection, we need to use placeholder to target css declaration.
+
+`$()` is the default placeholder for sparrow.  Option for choosing your own placeholder pattern will be introduced soon.
+
+### Placeholder examples
+
+```javascript
+$(){font-family: serif} //Target all CSS declarations with random selectors and font-family: serif as its rule.
+
+div{$(): 20px}//Target all CSS declarations with div as its selector, random properties and value of 20px as its rule.
+
+span{font-size: $()}//Target all CSS declarations with span as its selector, font-size as its properties and random value as its rule.
+```
 
 ## Installation
 
