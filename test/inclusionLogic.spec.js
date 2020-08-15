@@ -81,47 +81,50 @@ describe('Test sparrow', function () {
     })
   })
 
-  // describe('if operation is replace', function () {
-  //   it('should replace the target declaration', async function () {
-  //     const options = {
-  //       transformations: [{
-  //         target: '$(a){font-size: $(a)}', // css declaration with fill varible
-  //         transformations: [{
-  //           values: ['$(a){display: none}'],
-  //           operation: 'replace' // append, prepend, insertBefore, insertAfter, replace
-  //         }]
-  //       }]
-  //     }
-  //
-  //     await postcss([
-  //       sparrow(options)
-  //     ])
-  //       .process(css, {
-  //         from: undefined
-  //       }).then(result => {
-  //         result.root.walkDecls((decl) => {
-  //           afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
-  //         })
-  //       })
-  //
-  //     options.transformations.forEach(({ targets, transformations }, index) => {
-  //       targets.forEach((target, index) => {
-  //         const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
-  //
-  //         if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
-  //           expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
-  //           // Check if value of the same index in the afterTransformation array equals to replacementValue
-  //
-  //           transformations.forEach(({ values, operation }) => {
-  //             values.forEach((value) => {
-  //               expect(isMatchingDecl(afterTransformation[index], R.pipe(parseDecl, listDeclData)(value))).to.be.true
-  //             })
-  //           })
-  //         }
-  //       })
-  //     })
-  //   })
-  // })
+  describe('if operation is replace', function () {
+    it('should replace the target declaration', async function () {
+      const options = {
+        transformations: [{
+          target: '$(a){font-size: $(a)}', // css declaration with fill varible
+          values: ['$(a){display: none}'],
+          operation: 'replace', // append, prepend, insertBefore, insertAfter, replace
+          isInclude: true
+        }]
+      }
+
+      await postcss([
+        sparrow(options)
+      ])
+        .process(css, {
+          from: undefined
+        }).then(result => {
+          result.root.walkDecls((decl) => {
+            afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
+          })
+        })
+
+      options.transformations.forEach(({ targets, transformations }, index) => {
+        targets.forEach((target, index) => {
+          const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
+
+          if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
+            expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
+            // Check if value of the same index in the afterTransformation array equals to replacementValue
+
+            transformations.forEach(({ values, operation }) => {
+              values.forEach((value) => {
+                expect(isMatchingDecl({
+                  decl: afterTransformation[index],
+                  targetDecl: R.pipe(parseDecl, listDeclData)(value),
+                  isInclude: transformations.isInclude
+                })).to.be.true
+              })
+            })
+          }
+        })
+      })
+    })
+  })
   //
   // describe('if operation is before', function () {
   //   it('should insert a declaration before target declaration', async function () {
