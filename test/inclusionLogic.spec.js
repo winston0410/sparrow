@@ -52,6 +52,7 @@ describe('Test sparrow', function () {
         transformations: [{
           target: 'a{font-size: 20px}', // css declaration with fill varible
           operation: 'remove', // append, prepend, insertBefore, insertAfter, replace
+          values: [],
           isInclude: true
         }]
       }
@@ -68,12 +69,14 @@ describe('Test sparrow', function () {
         })
 
       options.transformations.forEach((transformation, index) => {
-        console.log(transformation)
-
         const targetDeclData = R.pipe(parseDecl, listDeclData)(transformation.target)
 
         // Expect target cannot be found in trasnformedData
-        expect(isMatchingDecl(afterTransformation[index], targetDeclData)).to.be.false
+        expect(isMatchingDecl({
+          decl: afterTransformation[index],
+          targetDecl: targetDeclData,
+          isInclude: transformation.isInclude
+        })).to.be.false
       })
     })
   })

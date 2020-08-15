@@ -34,7 +34,7 @@ const transformDeclaration = ({ decl, newDecl }) => {
   }
 }
 
-const isMatchingDecl = ({ decl, targetDecl, isInclude }) => (targetDecl.every((value, index) => isPlaceholderVariable(value) || value === decl[index])) === isInclude
+const isMatchingDecl = ({ decl, targetDecl, isInclude = true }) => (targetDecl.every((value, index) => isPlaceholderVariable(value) || value === decl[index])) === isInclude
 
 const convertPlaceholdersToValues = ({ decl, newDecl }) => newDecl.map((value, index) => isPlaceholderVariable(value) ? decl[index] : value)
 
