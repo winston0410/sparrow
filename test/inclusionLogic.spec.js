@@ -68,15 +68,15 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformations.forEach((transformation, index) => {
-        const targetDeclData = R.pipe(parseDecl, listDeclData)(transformation.target)
+      options.transformations.forEach(({ target, isInclude }, index) => {
+        const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
         // Expect target cannot be found in trasnformedData
         expect(isMatchingDecl({
           decl: afterTransformation[index],
           targetDecl: targetDeclData,
-          isInclude: transformation.isInclude
-        })).to.be.false
+          isInclude: isInclude
+        })).to.equal(!isInclude)
       })
     })
   })
@@ -111,7 +111,7 @@ describe('Test sparrow', function () {
             decl: beforeTransformation[index],
             targetDecl: targetDeclData,
             isInclude: isInclude
-          })).to.be.true
+          })).to.equal(isInclude)
           // Check if value of the same index in the afterTransformation array equals to replacementValue
 
           values.forEach((value) => {
@@ -119,7 +119,7 @@ describe('Test sparrow', function () {
               decl: afterTransformation[index],
               targetDecl: R.pipe(parseDecl, listDeclData)(value),
               isInclude: isInclude
-            })).to.be.true
+            })).to.equal(isInclude)
           })
         }
       })
@@ -156,7 +156,7 @@ describe('Test sparrow', function () {
             decl: beforeTransformation[index],
             targetDecl: targetDeclData,
             isInclude: isInclude
-          })).to.be.true
+          })).to.equal(isInclude)
           // Check if value of the same index in the afterTransformation array equals to replacementValue
           values.forEach((value) => {
             const newDecl = convertPlaceholdersToValues({
@@ -201,7 +201,7 @@ describe('Test sparrow', function () {
             decl: beforeTransformation[index],
             targetDecl: targetDeclData,
             isInclude: isInclude
-          })).to.be.true
+          })).to.equal(isInclude)
           // Check if value of the same index in the afterTransformation array equals to replacementValue
           values.forEach((value) => {
             const newDecl = convertPlaceholdersToValues({
