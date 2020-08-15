@@ -1,7 +1,7 @@
 const postcss = require('postcss')
 const R = require('ramda')
 
-const isPlaceholderVariable = (value) => /^\$\(\w*\)/g.test(value)
+const isPlaceholderVariable = ({ value, pattern = /^\$\(\w*\)/g }) => pattern.test(value)
 
 const listDeclData = (decl) => [decl.parent.selector, decl.prop, decl.value]
 
@@ -29,9 +29,9 @@ const transformDeclaration = ({ decl, newDecl: { operation, values } }) => {
   })
 }
 
-const isMatchingDecl = ({ decl, targetDecl, isInclude = true }) => (targetDecl.every((value, index) => isPlaceholderVariable(value) || value === decl[index])) === isInclude
+const isMatchingDecl = ({ decl, targetDecl, isInclude = true, pattern }) => (targetDecl.every((value, index) => isPlaceholderVariable({ value: value, pattern: pattern }) || value === decl[index])) === isInclude
 
-const convertPlaceholdersToValues = ({ decl, newDecl }) => newDecl.map((value, index) => isPlaceholderVariable(value) ? decl[index] : value)
+const convertPlaceholdersToValues = ({ decl, newDecl, pattern }) => newDecl.map((value, index) => isPlaceholderVariable({ value: value, pattern: pattern }) ? decl[index] : value)
 
 module.exports = {
   isPlaceholderVariable,
