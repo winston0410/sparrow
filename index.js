@@ -10,11 +10,13 @@ const {
 
 module.exports = postcss.plugin('postcss-sparrow', ({
   transformations,
-  silentConsole
+  silentConsole,
+  placeholderPattern
 }) => {
   const options = {
     transformations: transformations || [],
-    silentConsole: silentConsole || false
+    silentConsole: silentConsole || false,
+    placeholderPattern: placeholderPattern || /^\$\(\w*\)/g
   }
 
   return (root, result) => {
