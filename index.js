@@ -27,7 +27,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
         // If two arrays match, run transformation
         if (isMatchingDecl({ decl: declDataList, targetDecl: targetDeclDataList, isInclude: transformation.isInclude })) {
-          transformDeclaration({ decl: decl, newDecl: transformation.values })
+          transformDeclaration({ decl: decl, newDecl: transformation })
         }
       })
     })

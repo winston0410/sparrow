@@ -103,25 +103,25 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformations.forEach(({ targets, transformations }, index) => {
-        targets.forEach((target, index) => {
-          const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
+      options.transformations.forEach(({ target, values, isInclude }, index) => {
+        const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
-          if (isMatchingDecl(beforeTransformation[index], targetDeclData)) {
-            expect(isMatchingDecl(beforeTransformation[index], targetDeclData)).to.be.true
-            // Check if value of the same index in the afterTransformation array equals to replacementValue
+        if (isMatchingDecl({ decl: beforeTransformation[index], targetDecl: targetDeclData, isInclude: isInclude })) {
+          expect(isMatchingDecl({
+            decl: beforeTransformation[index],
+            targetDecl: targetDeclData,
+            isInclude: isInclude
+          })).to.be.true
+          // Check if value of the same index in the afterTransformation array equals to replacementValue
 
-            transformations.forEach(({ values, operation }) => {
-              values.forEach((value) => {
-                expect(isMatchingDecl({
-                  decl: afterTransformation[index],
-                  targetDecl: R.pipe(parseDecl, listDeclData)(value),
-                  isInclude: transformations.isInclude
-                })).to.be.true
-              })
-            })
-          }
-        })
+          values.forEach((value) => {
+            expect(isMatchingDecl({
+              decl: afterTransformation[index],
+              targetDecl: R.pipe(parseDecl, listDeclData)(value),
+              isInclude: isInclude
+            })).to.be.true
+          })
+        }
       })
     })
   })
