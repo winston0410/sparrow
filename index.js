@@ -9,17 +9,17 @@ const {
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
-  transformationList,
+  transformations,
   silentConsole
 }) => {
   const options = {
-    transformationList: transformationList || [],
+    transformations: transformations || [],
     silentConsole: silentConsole || false
   }
 
   return (root, result) => {
     root.walkDecls((decl) => {
-      options.transformationList.forEach((transformation) => {
+      options.transformations.forEach((transformation) => {
         transformation.targets.forEach((target) => {
           // Check if placeholder is missed.  Fill in if needed
 

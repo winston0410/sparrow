@@ -49,7 +49,7 @@ describe('Test sparrow', function () {
   describe('if operation is remove', function () {
     it('should remove the target declaration', async function () {
       const options = {
-        transformationList: [{
+        transformations: [{
           targets: ['a{font-size: 20px}'], // css declaration with fill varible
           transformations: [{
             operation: 'remove' // append, prepend, insertBefore, insertAfter, replace
@@ -68,7 +68,7 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformationList.forEach((transformation, index) => {
+      options.transformations.forEach((transformation, index) => {
         transformation.targets.forEach((target, index) => {
           const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
@@ -82,7 +82,7 @@ describe('Test sparrow', function () {
   describe('if operation is replace', function () {
     it('should replace the target declaration', async function () {
       const options = {
-        transformationList: [{
+        transformations: [{
           targets: ['$(a){font-size: $(a)}'], // css declaration with fill varible
           transformations: [{
             values: ['$(a){display: none}'],
@@ -102,7 +102,7 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformationList.forEach(({ targets, transformations }, index) => {
+      options.transformations.forEach(({ targets, transformations }, index) => {
         targets.forEach((target, index) => {
           const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
@@ -124,7 +124,7 @@ describe('Test sparrow', function () {
   describe('if operation is before', function () {
     it('should insert a declaration before target declaration', async function () {
       const options = {
-        transformationList: [{
+        transformations: [{
           targets: ['$(a){font-size: $(a)}'], // css declaration with fill varible
           transformations: [{
             values: ['$(a){display: none}'],
@@ -144,7 +144,7 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformationList.forEach(({ targets, transformations }, index) => {
+      options.transformations.forEach(({ targets, transformations }, index) => {
         targets.forEach((target, index) => {
           const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 
@@ -167,7 +167,7 @@ describe('Test sparrow', function () {
   describe('if operation is after', function () {
     it('should insert a declaration after target declaration', async function () {
       const options = {
-        transformationList: [{
+        transformations: [{
           targets: ['$(a){font-size: $(a)}'], // css declaration with fill varible
           transformations: [{
             values: ['$(a){display: none}'],
@@ -187,7 +187,7 @@ describe('Test sparrow', function () {
           })
         })
 
-      options.transformationList.forEach(({ targets, transformations }, index) => {
+      options.transformations.forEach(({ targets, transformations }, index) => {
         targets.forEach((target, index) => {
           const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
 

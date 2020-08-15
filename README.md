@@ -23,7 +23,7 @@ module.exports = {
     //Other plugins...
 
     require('postcss-sparrow')({
-      transformationList: [
+      transformations: [
         {
           targets: ['$(selector){font-size: 4px}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
           transformations: [{
@@ -46,7 +46,7 @@ module.exports = {
 .bar{
   font-size: 4rem;
 }
-```
+``` 
 
 <!-- Remove -->
 
@@ -73,7 +73,7 @@ module.exports = {
     //Other plugins...
 
     require('postcss-sparrow')({
-      transformationList: [
+      transformations: [
         {
           targets: ['$(selector){$(prop): $(value)%}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
           transformations: [{
@@ -106,7 +106,7 @@ This plugin is made with love by a Hong Konger.
 
 For PostCSS parser to parse CSS rules properly and allow wildcard selection, we need to use placeholder to target css declaration.
 
-`$()` is the default placeholder for sparrow.  Option for choosing your own placeholder pattern will be introduced soon.
+`$()` is the default placeholder for sparrow. Option for choosing your own placeholder pattern will be introduced soon.
 
 ### Placeholder examples
 
@@ -138,7 +138,7 @@ module.exports = {
     //Other plugins...
 
     require('postcss-sparrow')({
-      transformationList: [
+      transformations: [
         {
           targets: ['$(a){font-size: 20px}'], // css declaration with placeholders
           transformations: [{
