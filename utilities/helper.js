@@ -34,14 +34,16 @@ const isMatchingDecl = ({ decl, targetDecl, isInclude = true, pattern }) => (tar
 
 const convertPlaceholdersToValues = ({ decl, newDecl, pattern }) => newDecl.map((value, index) => isPlaceholderVariable({ value: value, pattern: pattern }) ? decl[index] : value)
 
-const log = (type) => (arg) => console.log(chalk.yellow(`${chalk.cyan(arg)} is not a ${chalk.cyan(type.name)}, it has been replaced by the default value.`))
+const stringifyVar = (variable) => Object.keys(variable)[0]
 
-const inCorrectType = (type) => R.ifElse(
+const log = (type) => (defaultValue) => (arg) => console.log(chalk.yellow(`The value of ${chalk.cyan(arg)} is not a ${chalk.cyan(type.name)}, thus it has been replaced by the default value ${chalk.cyan(defaultValue)}.`))
+
+const inCorrectType = (type) => (defaultValue) => R.ifElse(
   R.is(type),
   R.identity,
   R.pipe(
-    log(type),
-    R.F
+    log(type)(defaultValue),
+    () => R.identity(defaultValue)// Need to return default not current value here!
   )
 )
 
@@ -52,5 +54,6 @@ module.exports = {
   convertPlaceholdersToValues,
   parseDecl,
   listDeclData,
-  inCorrectType
+  inCorrectType,
+  stringifyVar
 }
