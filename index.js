@@ -5,7 +5,8 @@ const {
   transformDeclaration,
   isMatchingDecl,
   parseDecl,
-  listDeclData
+  listDeclData,
+  inCorrectType
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({

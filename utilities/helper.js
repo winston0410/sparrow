@@ -33,11 +33,18 @@ const isMatchingDecl = ({ decl, targetDecl, isInclude = true, pattern }) => (tar
 
 const convertPlaceholdersToValues = ({ decl, newDecl, pattern }) => newDecl.map((value, index) => isPlaceholderVariable({ value: value, pattern: pattern }) ? decl[index] : value)
 
+const inCorrectType = (type) => R.ifElse(
+  R.is(type),
+  R.identity,
+  R.F
+)
+
 module.exports = {
   isPlaceholderVariable,
   transformDeclaration,
   isMatchingDecl,
   convertPlaceholdersToValues,
   parseDecl,
-  listDeclData
+  listDeclData,
+  inCorrectType
 }
