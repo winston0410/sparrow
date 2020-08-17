@@ -6,8 +6,7 @@ const {
   isMatchingDecl,
   parseDecl,
   listDeclData,
-  inCorrectType,
-  stringifyVar
+  inCorrectType
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
