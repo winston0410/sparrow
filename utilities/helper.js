@@ -19,6 +19,7 @@ const transformDeclaration = ({ decl, newDecl: { operation, values } }) => {
 
   if (operation === 'remove') {
     decl.remove()
+    return
   }
 
   values.forEach((value, i) => {
