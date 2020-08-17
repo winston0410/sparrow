@@ -20,6 +20,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     placeholderPattern: placeholderPattern || /^\$\(\w*\)/g
   }
 
+  // console.log(inCorrectType(RegExp)('1'))
+
   return (root, result) => {
     root.walkDecls((decl) => {
       const declDataList = listDeclData(decl)
