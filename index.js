@@ -6,7 +6,7 @@ const {
   isMatchingDecl,
   parseDecl,
   listDeclData,
-  inCorrectType
+  isCorrectType
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
@@ -14,13 +14,20 @@ module.exports = postcss.plugin('postcss-sparrow', ({
   silentConsole,
   placeholderPattern
 }) => {
-  const isArray = inCorrectType(Array)([])
-  const isRegExp = inCorrectType(RegExp)(/^\$\(\w*\)/g)
+  const isArray = isCorrectType(Array)([])
+  const isRegExp = isCorrectType(RegExp)(/^\$\(\w*\)/g)
+  // const isBoolean =
 
   const options = {
     transformations: isArray(transformations),
     placeholderPattern: isRegExp(placeholderPattern)
   }
+
+  // const validatedTransformations = R.filter(
+  //   R.where({
+  //
+  //   })
+  // )(options.transformations)
 
   return (root, result) => {
     root.walkDecls((decl) => {
