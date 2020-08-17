@@ -36,7 +36,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     root.walkDecls((decl) => {
       const declDataList = listDeclData(decl)
 
-      options.transformations.forEach((transformation) => {
+      validatedTransformations.forEach((transformation) => {
         // TODO: Introduce AND logic for targets
         const targetDeclDataList = R.pipe(parseDecl, listDeclData)(transformation.target)
 
