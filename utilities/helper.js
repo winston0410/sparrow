@@ -1,5 +1,6 @@
 const postcss = require('postcss')
 const R = require('ramda')
+const chalk = require('chalk')
 
 const isPlaceholderVariable = ({ value, pattern = /^\$\(\w*\)/g }) => pattern.test(value)
 
@@ -33,7 +34,7 @@ const isMatchingDecl = ({ decl, targetDecl, isInclude = true, pattern }) => (tar
 
 const convertPlaceholdersToValues = ({ decl, newDecl, pattern }) => newDecl.map((value, index) => isPlaceholderVariable({ value: value, pattern: pattern }) ? decl[index] : value)
 
-const log = (type) => (arg) => console.log(`${arg} is not a ${type.name}, it has been replaced by the default value.`)
+const log = (type) => (arg) => console.log(chalk.yellow(`${chalk.cyan(arg)} is not a ${chalk.cyan(type.name)}, it has been replaced by the default value.`))
 
 const inCorrectType = (type) => R.ifElse(
   R.is(type),
