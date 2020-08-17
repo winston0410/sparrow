@@ -15,13 +15,13 @@ module.exports = postcss.plugin('postcss-sparrow', ({
   silentConsole,
   placeholderPattern
 }) => {
-  const options = {
-    transformations: transformations || [],
-    silentConsole: silentConsole || false,
-    placeholderPattern: inCorrectType(RegExp)(/^\$\(\w*\)/g)(stringifyVar({ placeholderPattern }))
-  }
+  const isArray = inCorrectType(Array)([])
+  const isRegExp = inCorrectType(RegExp)(/^\$\(\w*\)/g)
 
-  console.log(stringifyVar(options))
+  const options = {
+    transformations: isArray(transformations),
+    placeholderPattern: isRegExp(placeholderPattern)
+  }
 
   return (root, result) => {
     root.walkDecls((decl) => {
