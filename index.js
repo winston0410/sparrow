@@ -21,18 +21,21 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     placeholderPattern: isRegExp(placeholderPattern) || /^\$\(\w*\)/g
   }
 
-  // const validatedTransformations = R.filter(
-  //   R.where({
-  //
-  //   })
-  // )(options.transformations)
+  const validatedTransformations = R.filter(
+    R.where({
+      values: isArray,
+      isInclude: isBoolean
+    })
+  )(options.transformations)
+
+  console.log(validatedTransformations)
 
   return (root, result) => {
     root.walkDecls((decl) => {
       const declDataList = listDeclData(decl)
 
       options.transformations.forEach((transformation) => {
-        // Check if placeholder is missed.  Fill in if needed
+        // TODO: Introduce AND logic for targets
         const targetDeclDataList = R.pipe(parseDecl, listDeclData)(transformation.target)
 
         // If two arrays match, run transformation
