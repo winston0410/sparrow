@@ -49,6 +49,7 @@ const isCorrectType = (type) => R.ifElse(
 const isArray = isCorrectType(Array)
 const isRegExp = isCorrectType(RegExp)
 const isBoolean = isCorrectType(Boolean)
+const isString = isCorrectType(String)
 
 module.exports = {
   isPlaceholderVariable,
@@ -59,5 +60,6 @@ module.exports = {
   listDeclData,
   isArray,
   isRegExp,
-  isBoolean
+  isBoolean,
+  isString
 }

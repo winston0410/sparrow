@@ -8,7 +8,8 @@ const {
   listDeclData,
   isArray,
   isRegExp,
-  isBoolean
+  isBoolean,
+  isString
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
@@ -23,6 +24,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
   const validatedTransformations = R.filter(
     R.where({
+      operation: isString,
       values: isArray,
       isInclude: isBoolean
     })
