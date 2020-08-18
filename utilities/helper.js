@@ -37,9 +37,8 @@ const convertPlaceholdersToValues = ({ decl, newDecl, pattern }) => newDecl.map(
 
 const log = (type) => (defaultValue) => (arg) => console.log(chalk.yellow(`The value of ${chalk.cyan(arg)} is not a ${chalk.cyan(type.name)}, thus it has been replaced by the default value ${chalk.cyan(defaultValue)}.`))
 
-const isCorrectType = (type) => R.ifElse(
+const isCorrectType = (type) => R.unless(
   R.is(type),
-  R.identity,
   R.F
   // R.pipe(
   //   log(type)(defaultValue),
