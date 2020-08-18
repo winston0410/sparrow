@@ -30,26 +30,34 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     })
   )(options.transformations)
 
-  console.log(validatedTransformations)
-
   return (root, result) => {
-    root.walkDecls((decl) => {
-      const declDataList = listDeclData(decl)
+    const sortBySelector = R.sortBy(R.prop('selector'))
 
-      validatedTransformations.forEach((transformation) => {
-        // TODO: Introduce AND logic for targets
-        const targetDeclDataList = R.pipe(parseDecl, listDeclData)(transformation.target)
+    // R.pipe(
+    //   sortBySelector,
+    //   mergeBySelector
+    // )(root.nodes)
 
-        // If two arrays match, run transformation
-        if (isMatchingDecl({
-          decl: declDataList,
-          targetDecl: targetDeclDataList,
-          isInclude: transformation.isInclude,
-          pattern: options.placeholderPattern
-        })) {
-          transformDeclaration({ decl: decl, newDecl: transformation })
-        }
-      })
-    })
+    // const mergedNodes = .map(sortBySelector)
+
+    // root.walkDecls((decl) => {
+    //   const declDataList = listDeclData(decl)
+    //
+    //   validatedTransformations.forEach((transformation) => {
+    //     // TODO: Introduce AND logic for targets
+    //     const targetDeclDataList = R.pipe(parseDecl, listDeclData)(transformation.target)
+    //
+    //     // If two arrays match, run transformation
+    //     if (isMatchingDecl({
+    //       decl: declDataList,
+    //       targetDecl: targetDeclDataList,
+    //       isInclude: transformation.isInclude,
+    //       pattern: options.placeholderPattern
+    //     })) {
+    //       transformDeclaration({ decl: decl, newDecl: transformation })
+    //     }
+    //   })
+    // })
+    return 'Hello'
   }
 })
