@@ -30,7 +30,7 @@ describe('Test sparrow', function () {
       font-size: 20px;
     }
 
-    body p #hello{
+    p #hello{
       color: red
     }`
 

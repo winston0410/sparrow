@@ -31,12 +31,16 @@ module.exports = postcss.plugin('postcss-sparrow', ({
   )(options.transformations)
 
   return (root, result) => {
-    const sortBySelector = R.sortBy(R.prop('selector'))
+    const groupBySelector = R.groupBy(R.prop('selector'))
 
-    // R.pipe(
-    //   sortBySelector,
-    //   mergeBySelector
-    // )(root.nodes)
+    // const mergeBySelector = R.map(R.reduce()())
+    const concatValues = (k, l, r) => k === 'nodes' ? R.concat(l, r) : r
+
+    const mergedNodes = R.pipe(
+      groupBySelector,
+      R.map(R.reduce(R.mergeDeepWithKey(concatValues), R.head)),
+      R.values
+    )(root.nodes)
 
     // const mergedNodes = .map(sortBySelector)
 
