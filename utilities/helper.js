@@ -9,6 +9,12 @@ const listDeclData = (decl) => [decl.parent.selector, decl.prop, decl.value]
 const stringifyDecl = (declArray) => `${declArray[1]}: ${declArray[2]};`
 
 const parseDecl = (decl) => postcss.parse(decl, { from: undefined }).first.first
+
+const getDeclData = (data) => (decl) => {
+  const lens = R.lensPath(data.split('.'))
+  return R.view(lens)(parseDecl(decl))
+}
+
 // Nested object deconstructuring for newDecl
 const transformDeclaration = ({ decl, newDecl: { operation, values } }) => {
   const transformationDict = {
@@ -61,5 +67,6 @@ module.exports = {
   isArray,
   isRegExp,
   isBoolean,
-  isString
+  isString,
+  getDeclData
 }

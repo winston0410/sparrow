@@ -9,7 +9,8 @@ const {
   isArray,
   isRegExp,
   isBoolean,
-  isString
+  isString,
+  getDeclData
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
@@ -36,11 +37,25 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     // const mergeBySelector = R.map(R.reduce()())
     const concatValues = (k, l, r) => k === 'nodes' ? R.concat(l, r) : r
 
+    const mergeObjects = R.reduce(R.mergeDeepWithKey(concatValues), R.head)
+
     const mergedNodes = R.pipe(
       groupBySelector,
-      R.map(R.reduce(R.mergeDeepWithKey(concatValues), R.head)),
-      R.values
+      R.map(mergeObjects)
+      // R.values
     )(root.nodes)
+
+    const getSelector = getDeclData('parent.selector')
+    const getProp = getDeclData('prop')
+    const getValue = getDeclData('value')
+    //
+    // console.log(validatedTransformations)
+
+    validatedTransformations.forEach(({ target }) => {
+      console.log(getSelector(target))
+    })
+
+    // console.log(R.map((v) => v.nodes)(mergedNodes))
 
     // const mergedNodes = .map(sortBySelector)
 
