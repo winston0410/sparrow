@@ -52,7 +52,23 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const hasSelector = R.has(R.__, mergedNodes)
 
-    validatedTransformations.forEach(({ target }, index) => {
+    validatedTransformations.forEach(({ targets }, index) => {
+
+      //Target config object values
+      // {
+      //   targets: [
+      //     {
+      //       selectors: ['p', 'body'],
+      //       rules: [
+      //         {
+      //           rulesToLookFor: [],
+      //           operation: 'remove'
+      //         }
+      //       ]
+      //     }
+      //   ]
+      // }
+
       const targetSelector = parseSelector(target)
 
       if (hasSelector(targetSelector) || isPlaceholderVariable(targetSelector)) {
