@@ -24,6 +24,15 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     placeholderPattern: isRegExp(placeholderPattern) || /^\$\(\w*\)/g
   }
 
+  // const validatedTransformations = R.filter(
+  //   R.where({
+  //
+  //     operation: isString,
+  //     values: isArray,
+  //     isInclude: isBoolean
+  //   })
+  // )(options.transformations)
+
   const validatedTransformations = R.filter(
     R.where({
       operation: isString,
@@ -56,7 +65,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
       //Target config object values
       // {
-      //   targets: [
+      //   transformations: [
       //     {
       //       selectors: ['p', 'body'],
       //       rules: [
