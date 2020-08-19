@@ -49,13 +49,12 @@ describe('Test sparrow', function () {
   describe('if operation is remove', function () {
     it('should remove the target declaration', async function () {
       const options = {
-        transformations: [{
-          selectors: ['a'], // css declaration with fill varible
-          rulesToTransform: [{
-            rules: ['font-size: 20px'],
-            operation: 'remove' // append, prepend, insertBefore, insertAfter, replace
-          }]
-        }]
+        transformations: [
+          {
+            selectors: ['p', 'body'],
+            inclusion: true
+          }
+        ]
       }
 
       await postcss([

@@ -35,9 +35,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
   const validatedTransformations = R.filter(
     R.where({
-      operation: isString,
-      values: isArray,
-      isInclude: isBoolean
+      selectors: isArray,
+      inclusion: isBoolean
     })
   )(options.transformations)
 
@@ -61,29 +60,24 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const hasSelector = R.has(R.__, mergedNodes)
 
-    validatedTransformations.forEach(({ targets }, index) => {
+    console.log(validatedTransformations)
 
-      //Target config object values
-      // {
-      //   transformations: [
-      //     {
-      //       selectors: ['p', 'body'],
-      //       rules: [
-      //         {
-      //           rulesToLookFor: [],
-      //           operation: 'remove'
-      //         }
-      //       ]
-      //     }
-      //   ]
-      // }
-
-      const targetSelector = parseSelector(target)
-
-      if (hasSelector(targetSelector) || isPlaceholderVariable(targetSelector)) {
-        // Run transformation here
-      }
-    })
+    // validatedTransformations.forEach(({ selectors }, index) => {
+    //   // Target config object values
+    //
+    //   // const targetSelector = parseSelector(target)
+    //   //
+    //
+    //   console.log(selectors)
+    //
+    //   console.log(hasSelector(selectors))
+    //   console.log(R.either(hasSelector, isPlaceholderVariable)(selectors))
+    //
+    //   if (R.either(hasSelector, isPlaceholderVariable)(selectors)) {
+    //     // Run transformation here
+    //     console.log(`${selectors} has been targeted`)
+    //   }
+    // })
 
     // console.log(R.map((v) => v.nodes)(mergedNodes))
 
