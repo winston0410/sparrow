@@ -10,7 +10,8 @@ const {
   isRegExp,
   isBoolean,
   isString,
-  getDeclData
+  getDeclData,
+  isPlaceholderVariable
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
@@ -45,14 +46,18 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       // R.values
     )(root.nodes)
 
-    const getSelector = getDeclData('parent.selector')
-    const getProp = getDeclData('prop')
-    const getValue = getDeclData('value')
-    //
-    // console.log(validatedTransformations)
+    const parseSelector = getDeclData('parent.selector')
+    const parseProp = getDeclData('prop')
+    const parseValue = getDeclData('value')
 
-    validatedTransformations.forEach(({ target }) => {
-      console.log(getSelector(target))
+    const hasSelector = R.has(R.__, mergedNodes)
+
+    validatedTransformations.forEach(({ target }, index) => {
+      const targetSelector = parseSelector(target)
+
+      if (hasSelector(targetSelector) || isPlaceholderVariable(targetSelector)) {
+        // Run transformation here
+      }
     })
 
     // console.log(R.map((v) => v.nodes)(mergedNodes))
