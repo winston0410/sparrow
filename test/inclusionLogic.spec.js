@@ -63,7 +63,7 @@ describe('Test sparrow', function () {
         .process(css, {
           from: undefined
         }).then(result => {
-          console.log(result.nodes)
+          console.log(result)
 
           result.root.walkDecls((decl) => {
             afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
