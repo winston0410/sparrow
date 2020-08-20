@@ -48,7 +48,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const mergeObjects = R.reduce(R.mergeDeepWithKey(concatValues), R.head)
 
-    const mergedNodes = R.pipe(
+    const mergedNodeList = R.pipe(
       groupBySelector,
       R.map(mergeObjects)
       // R.values
@@ -58,62 +58,55 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     const parseProp = getDeclData('prop')
     const parseValue = getDeclData('value')
 
-    const hasSelector = R.has(R.__, mergedNodes)
+    // const hasSelector = R.has(R.__, mergedNodeList)
+    const hasSelector = R.has('selectors')
 
-    console.log(validatedTransformations)
-
-    const selectorList = R.pipe(
-      R.pluck('selectors'),
-      R.flatten
-    )(validatedTransformations)
-
-    const isMatchingSelector = R.either(hasSelector, isPlaceholderVariable)
+    // Method 1: Separate targeted selector
+    const pickMatching = (list) => (isInclude) => (v, k) => R.either(R.includes(k), R.includes('*'))(list) === isInclude
 
     const matchingSelectorList = R.pipe(
-      R.pickBy(R.map(hasSelector, selectorList))
-    )(mergedNodes)
+      R.map(({ selectors, inclusion }) => R.pickBy(
+        pickMatching(selectors)(inclusion), mergedNodeList))
+    )(validatedTransformations)
 
-    console.log(matchingSelectorList)
-    //
-    // validatedTransformations.forEach(({ selectors }, index) => {
-    //   // Target config object values
-    //
-    //   // const targetSelector = parseSelector(target)
-    //   //
-    //
-    //   // console.log(selectors)
-    //   //
-    //   // console.log(hasSelector(selectors))
-    //   // console.log(R.either(hasSelector, isPlaceholderVariable)(selectors))
-    //
-    //   if ((selectors)) {
-    //     // Run transformation here
-    //     console.log(`${selectors} has been targeted`)
-    //   }
-    // })
+    // console.log(matchingSelectorList) // Other irralevent object has been removed. Best solution should be only changing the required object
 
-    // console.log(R.map((v) => v.nodes)(mergedNodes))
+    // Method 2: Target selectors without separation
+    const selectorLensLists = R.map(({ selectors, inclusion }) => {
+      return R.map((selector) => {
+        return R.lensPath([selector, 'nodes'])
+      })(selectors)
+    })(validatedTransformations)
 
-    // const mergedNodes = .map(sortBySelector)
+    // Hard code lensPath
 
-    // root.walkDecls((decl) => {
-    //   const declDataList = listDeclData(decl)
+    // console.log(R.view(
+    //   R.lensPath(['body', 'nodes']),
+    //   mergedNodeList
+    // ))
     //
-    //   validatedTransformations.forEach((transformation) => {
-    //     // TODO: Introduce AND logic for targets
-    //     const targetDeclDataList = R.pipe(parseDecl, listDeclData)(transformation.target)
     //
-    //     // If two arrays match, run transformation
-    //     if (isMatchingDecl({
-    //       decl: declDataList,
-    //       targetDecl: targetDeclDataList,
-    //       isInclude: transformation.isInclude,
-    //       pattern: options.placeholderPattern
-    //     })) {
-    //       transformDeclaration({ decl: decl, newDecl: transformation })
-    //     }
-    //   })
-    // })
-    return 'Hello'
+    //
+
+    // TODO: Create an array of lens -> use reduce to use those lens to transform the mergedNodeList -> Turn merged nodes back to arrays
+
+    const transformedNodeList = R.values(mergedNodeList)
+
+    // console.log(selectorList)
+    // console.log(validatedTransformations)
+
+    // const matchingSelectorList = R.pipe(
+    //   R.pickBy(pickMatchingSelector)
+    // )(mergedNodeList)
+    //
+    // console.log(matchingSelectorList)
+
+    // const matchingSelectorList = R.pipe(
+    //   R.pickBy(R.map(hasSelector, selectorList))
+    // )(mergedNodeList)
+    //
+
+    // This mutation is deliberate, as PostCSS doesn't provide an immutable API
+    root.nodes = transformedNodeList
   }
 })

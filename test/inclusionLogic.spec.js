@@ -51,7 +51,7 @@ describe('Test sparrow', function () {
       const options = {
         transformations: [
           {
-            selectors: ['p', 'body'],
+            selectors: ['*', 'body'],
             inclusion: true
           }
         ]
@@ -63,6 +63,8 @@ describe('Test sparrow', function () {
         .process(css, {
           from: undefined
         }).then(result => {
+          console.log(result.nodes)
+
           result.root.walkDecls((decl) => {
             afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
           })
