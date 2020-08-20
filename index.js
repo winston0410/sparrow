@@ -62,12 +62,17 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     const hasSelector = R.has('selectors')
 
     // Method 1: Separate targeted selector
-    const pickMatching = (list) => (isInclude) => (v, k) => R.either(R.includes(k), R.includes('*'))(list) === isInclude
+    const pickMatching = (list) => (isInclude) => (v, k) => R.pipe(
+      R.either(R.includes(k), R.includes('*')),
+      R.equals(isInclude)
+    )(list)
 
     const matchingSelectorList = R.pipe(
       R.map(({ selectors, inclusion }) => R.pickBy(
         pickMatching(selectors)(inclusion), mergedNodeList))
     )(validatedTransformations)
+
+    console.log(matchingSelectorList)
 
     // console.log(matchingSelectorList) // Other irralevent object has been removed. Best solution should be only changing the required object
 

@@ -51,7 +51,7 @@ describe('Test sparrow', function () {
       const options = {
         transformations: [
           {
-            selectors: ['*', 'body'],
+            selectors: ['p', 'body'],
             inclusion: true
           }
         ]
