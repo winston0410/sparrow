@@ -62,18 +62,31 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     console.log(validatedTransformations)
 
+    const selectorList = R.pipe(
+      R.pluck('selectors'),
+      R.flatten
+    )(validatedTransformations)
+
+    const isMatchingSelector = R.either(hasSelector, isPlaceholderVariable)
+
+    const matchingSelectorList = R.pipe(
+      R.pickBy(R.map(hasSelector, selectorList))
+    )(mergedNodes)
+
+    console.log(matchingSelectorList)
+    //
     // validatedTransformations.forEach(({ selectors }, index) => {
     //   // Target config object values
     //
     //   // const targetSelector = parseSelector(target)
     //   //
     //
-    //   console.log(selectors)
+    //   // console.log(selectors)
+    //   //
+    //   // console.log(hasSelector(selectors))
+    //   // console.log(R.either(hasSelector, isPlaceholderVariable)(selectors))
     //
-    //   console.log(hasSelector(selectors))
-    //   console.log(R.either(hasSelector, isPlaceholderVariable)(selectors))
-    //
-    //   if (R.either(hasSelector, isPlaceholderVariable)(selectors)) {
+    //   if ((selectors)) {
     //     // Run transformation here
     //     console.log(`${selectors} has been targeted`)
     //   }
