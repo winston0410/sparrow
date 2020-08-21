@@ -58,10 +58,9 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     // TODO find and return index for the matching object, selecting it by its 'selector' prop
 
-    const eq = (k) => (v) => R.propEq(k)(v)
-    const selectorEq = eq('selector')
-    //
-    // const findIndexBySelector = findIndex('selector')
+    const selectorEq = R.propEq('selector')
+
+    const findIndexBySelector = R.findIndex(selectorEq)
 
     const shouldBeIncluded = ({ value, toInclude }) => R.pipe(
       R.either(
