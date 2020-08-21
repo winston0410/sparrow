@@ -24,15 +24,6 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     placeholderPattern: isRegExp(placeholderPattern) || /^\$\(\w*\)/g
   }
 
-  // const validatedTransformations = R.filter(
-  //   R.where({
-  //
-  //     operation: isString,
-  //     values: isArray,
-  //     isInclude: isBoolean
-  //   })
-  // )(options.transformations)
-
   const validatedTransformations = R.filter(
     R.where({
       selectors: isArray,
@@ -50,8 +41,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const mergedNodeList = R.pipe(
       groupBySelector,
-      R.map(mergeObjects)
-      // R.values
+      R.map(mergeObjects),
+      R.values
     )(root.nodes)
 
     const parseSelector = getDeclData('parent.selector')
@@ -59,31 +50,38 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     const parseValue = getDeclData('value')
 
     // const hasSelector = R.has(R.__, mergedNodeList)
-    const hasSelector = R.has('selectors')
+    // const hasSelector = R.has('selectors')
+    //
+    //
 
-    // Method 1: Separate targeted selector
-    const pickMatching = (list) => (isInclude) => (v, k) => R.pipe(
+    const hasWildCard = R.includes('*')
+
+    // TODO find and return index for the matching object, selecting it by its 'selector' prop
+
+    const eq = (k) => (v) => R.propEq(k)(v)
+    const selectorEq = eq('selector')
+    //
+    // const findIndexBySelector = findIndex('selector')
+
+    const shouldBeIncluded = ({ value, toInclude }) => R.pipe(
       R.either(
-        R.includes(k),
-        R.includes('*')
+        R.includes(value),
+        hasWildCard
       ),
-      R.equals(isInclude)
-    )(list)
-
-    const matchingSelectorList = R.pipe(
-      R.map(({ selectors, inclusion }) => R.pickBy(
-        pickMatching(selectors)(inclusion), mergedNodeList))
-    )(validatedTransformations)
-
-    // console.log(matchingSelectorList)
-
-    // console.log(matchingSelectorList) // Other irralevent object has been removed. Best solution should be only changing the required object
+      R.equals(toInclude)
+    )
 
     // Method 2: Target selectors without separation
     const selectorLensLists = R.map(({ selectors, inclusion }) => {
-      return R.map((selector) => {
-        return R.lensPath([selector, 'nodes'])
-      })(selectors)
+      return R.map(R.pipe(
+        R.unless(
+          hasWildCard,
+          R.pipe( // Run if no wild card is found
+
+            R.tap(console.log) // Find object with matching selector
+          )
+        )
+      ))(selectors)
     })(validatedTransformations)
 
     // Hard code lensPath
@@ -95,24 +93,16 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     //
     //
     //
+    //
+    //
+    //
+    //
+    //
+    //
 
     // TODO: Create an array of lens -> use reduce to use those lens to transform the mergedNodeList -> Turn merged nodes back to arrays
 
-    const transformedNodeList = R.values(mergedNodeList)
-
-    // console.log(selectorList)
-    // console.log(validatedTransformations)
-
-    // const matchingSelectorList = R.pipe(
-    //   R.pickBy(pickMatchingSelector)
-    // )(mergedNodeList)
-    //
-    // console.log(matchingSelectorList)
-
-    // const matchingSelectorList = R.pipe(
-    //   R.pickBy(R.map(hasSelector, selectorList))
-    // )(mergedNodeList)
-    //
+    const transformedNodeList = mergedNodeList
 
     // This mutation is deliberate, as PostCSS doesn't provide an immutable API
     root.nodes = transformedNodeList
