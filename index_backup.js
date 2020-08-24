@@ -21,7 +21,6 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
   const hasWildCard = R.includes('*')
   const selectorsLens = R.lensProp('selectors')
-  const declsLens = R.lensProp('decls')
 
   const validatedTransformations = R.pipe(
     R.filter(
@@ -44,9 +43,6 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     )
 
     const getSelectors = R.prop('selectors')
-    const getDecls = R.prop('decls')
-    const getProp = R.prop('prop')
-    const getValue = R.prop('value')
 
     const isSelectorEqual = R.propEq('selector')
     const isSelectorNotEqual = R.complement(isSelectorEqual)
@@ -55,51 +51,54 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const notEqualNegativeOne = R.complement(R.equals)(-1)
 
-    const rejectNegativeResult = R.reject(
-      R.equals(-1)
+    const filterNegativeResult = R.filter(
+      notEqualNegativeOne
     )
 
     const ifMatchingResultFound = R.when(
       notEqualNegativeOne
     )
 
-    const getNodesBySelectors = (list) => (obj) =>
+    const getNodesBySelectors = (obj) => R.map(
       R.pipe(
-        R.map(
-          shouldIncludeOrExclude(
-            R.over(selectorsLens, R.map(isSelectorEqual)),
-            R.over(selectorsLens, R.map(isSelectorNotEqual))
-          )
+        shouldIncludeOrExclude(
+          isSelectorEqual,
+          isSelectorNotEqual
         ),
-        R.map(getSelectors),
-        R.map(R.anyPass),
-        R.map(R.filter(R.__, obj))
-      )(list)
-
-    const getDeclsByProp = (list) => (obj) => R.pipe(
-      R.map(getDecls),
-      R.map(
-        R.map(
-          shouldIncludeOrExclude(
-            R.evolve({
-              prop: R.equals,
-              value: R.equals
-            }),
-            R.evolve({
-              prop: R.complement(R.equals),
-              value: R.complement(R.equals)
-            })
+        R.findIndex(R.__, obj), // Bug.  -1 will be passed to lensIndex, finding unrelated nodes
+        ifMatchingResultFound(
+          R.pipe(
+            R.lensIndex,
+            R.view(R.__, obj)
           )
         )
-      ),
-      R.tap(console.log)
+      )
+    )
+
+    const getNodesToTransform = (list) => (obj) => R.map(
+      R.pipe(
+        getSelectors,
+        getNodesBySelectors(obj),
+        R.tap(console.log),
+        filterNegativeResult
+      )
+    )(list)
+
+    const getDeclsToTransform = (list) => (obj) => R.map(
+      shouldIncludeOrExclude(
+        R.pipe(
+          R.tap(console.log)
+        ),
+        R.pipe(
+          R.tap(console.log)
+        )
+      )
     )(list)
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
       R.values,
-      getNodesBySelectors(validatedTransformations),
-      getDeclsByProp(validatedTransformations)
+      getNodesToTransform(validatedTransformations)
 
     )(root.nodes)
 
