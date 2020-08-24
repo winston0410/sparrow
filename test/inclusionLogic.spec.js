@@ -52,7 +52,21 @@ describe('Test sparrow', function () {
         transformations: [
           {
             selectors: ['p', 'body'],
-            inclusion: true
+            inclusion: true,
+            decls: [{
+              prop: 'font-size',
+              value: '18px',
+              inclusion: true
+            }]
+          },
+          {
+            selectors: ['a'],
+            inclusion: false,
+            decls: [{
+              prop: 'padding',
+              value: '5px',
+              inclusion: true
+            }]
           }
         ]
       }

@@ -2,16 +2,11 @@ const postcss = require('postcss')
 const R = require('ramda')
 
 const {
-  transformDeclaration,
-  isMatchingDecl,
-  parseDecl,
-  listDeclData,
   isArray,
   isRegExp,
   isBoolean,
   isString,
-  getDeclData,
-  isPlaceholderVariable
+  mergeNodesBySelector
 } = require('./utilities/helper.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
@@ -20,90 +15,93 @@ module.exports = postcss.plugin('postcss-sparrow', ({
   placeholderPattern
 }) => {
   const options = {
-    transformations: isArray(transformations) || [],
-    placeholderPattern: isRegExp(placeholderPattern) || /^\$\(\w*\)/g
+    transformations: R.defaultTo([])(transformations),
+    placeholderPattern: R.defaultTo(/^\$\(\w*\)/g)(placeholderPattern)
   }
 
-  const validatedTransformations = R.filter(
-    R.where({
-      selectors: isArray,
-      inclusion: isBoolean
-    })
+  const hasWildCard = R.includes('*')
+  const selectorsLens = R.lensProp('selectors')
+
+  const validatedTransformations = R.pipe(
+    R.filter(
+      R.where({
+        selectors: isArray,
+        inclusion: isBoolean,
+        decls: isArray
+      })
+    )
   )(options.transformations)
 
   return (root, result) => {
-    const groupBySelector = R.groupBy(R.prop('selector'))
-
-    // const mergeBySelector = R.map(R.reduce()())
-    const concatValues = (k, l, r) => k === 'nodes' ? R.concat(l, r) : r
-
-    const mergeObjects = R.reduce(R.mergeDeepWithKey(concatValues), R.head)
-
     const mergedNodeList = R.pipe(
-      groupBySelector,
-      R.map(mergeObjects),
+      mergeNodesBySelector,
       R.values
     )(root.nodes)
 
-    const parseSelector = getDeclData('parent.selector')
-    const parseProp = getDeclData('prop')
-    const parseValue = getDeclData('value')
-
-    // const hasSelector = R.has(R.__, mergedNodeList)
-    // const hasSelector = R.has('selectors')
-    //
-    //
-
-    const hasWildCard = R.includes('*')
-
-    // TODO find and return index for the matching object, selecting it by its 'selector' prop
-
-    const selectorEq = R.propEq('selector')
-
-    const findIndexBySelector = R.findIndex(selectorEq)
-
-    const shouldBeIncluded = ({ value, toInclude }) => R.pipe(
-      R.either(
-        R.includes(value),
-        hasWildCard
-      ),
-      R.equals(toInclude)
+    const shouldIncludeOrExclude = R.ifElse(
+      R.propEq('inclusion', true)
     )
 
-    // Method 2: Target selectors without separation
-    const selectorLensLists = R.map(({ selectors, inclusion }) => {
-      return R.map(R.pipe(
-        R.unless(
-          hasWildCard,
-          R.pipe( // Run if no wild card is found
+    const getSelectors = R.prop('selectors')
 
-            R.tap(console.log) // Find object with matching selector
+    const isSelectorEqual = R.propEq('selector')
+    const isSelectorNotEqual = R.complement(isSelectorEqual)
+    const isPropEqual = R.propEq('prop')
+    const isValueEqual = R.propEq('value')
+
+    const notEqualNegativeOne = R.complement(R.equals)(-1)
+
+    const filterNegativeResult = R.filter(
+      notEqualNegativeOne
+    )
+
+    const ifMatchingResultFound = R.when(
+      notEqualNegativeOne
+    )
+
+    const getNodesBySelectors = (obj) => R.map(
+      R.pipe(
+        shouldIncludeOrExclude(
+          isSelectorEqual,
+          isSelectorNotEqual
+        ),
+        R.findIndex(R.__, obj), // Bug.  -1 will be passed to lensIndex, finding unrelated nodes
+        ifMatchingResultFound(
+          R.pipe(
+            R.lensIndex,
+            R.view(R.__, obj)
           )
         )
-      ))(selectors)
-    })(validatedTransformations)
+      )
+    )
 
-    // Hard code lensPath
+    const getNodesToTransform = (list) => (obj) => R.map(
+      R.pipe(
+        getSelectors,
+        getNodesBySelectors(obj),
+        R.tap(console.log),
+        filterNegativeResult
+      )
+    )(list)
 
-    // console.log(R.view(
-    //   R.lensPath(['body', 'nodes']),
-    //   mergedNodeList
-    // ))
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
+    const getDeclsToTransform = (list) => (obj) => R.map(
+      shouldIncludeOrExclude(
+        R.pipe(
+          R.tap(console.log)
+        ),
+        R.pipe(
+          R.tap(console.log)
+        )
+      )
+    )(list)
 
-    // TODO: Create an array of lens -> use reduce to use those lens to transform the mergedNodeList -> Turn merged nodes back to arrays
+    const transformedNodeList = R.pipe(
+      mergeNodesBySelector,
+      R.values,
+      getNodesToTransform(validatedTransformations)
 
-    const transformedNodeList = mergedNodeList
+    )(root.nodes)
 
-    // This mutation is deliberate, as PostCSS doesn't provide an immutable API
-    root.nodes = transformedNodeList
+    // root.nodes = transformedNodeList
   }
 })
