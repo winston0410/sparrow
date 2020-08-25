@@ -22,6 +22,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
   const hasWildCard = R.includes('*')
   const selectorsLens = R.lensProp('selectors')
   const declsLens = R.lensProp('decls')
+  const nodesLens = R.lensProp('nodes')
 
   const validatedTransformations = R.pipe(
     R.filter(
@@ -63,6 +64,12 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       notEqualNegativeOne
     )
 
+    const fromNestedLoop = (fn) => R.map(
+      R.map(
+        fn
+      )
+    )
+
     const getNodesBySelectors = (list) => (obj) =>
       R.pipe(
         R.map(
@@ -78,39 +85,39 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const getDeclsByProp = (list) => (obj) => R.pipe(
       R.map(getDecls),
-      R.map(
-        R.map(
-          shouldIncludeOrExclude(
-            R.pipe(
-              R.evolve({
-                prop: R.equals,
-                value: R.equals
-              }),
-              R.pick(
-                ['prop', 'value']
-              )
-            ),
-            R.evolve({
-              prop: R.complement(R.equals),
-              value: R.complement(R.equals)
-            })
-          )
-        )
-      ),
+      // R.map(
+      //   R.map(
+      //     shouldIncludeOrExclude(
+      //       R.pipe(
+      //         R.evolve({
+      //           prop: R.equals,
+      //           value: R.equals
+      //         }),
+      //         R.pick(
+      //           ['prop', 'value']
+      //         )
+      //       ),
+      //       R.evolve({
+      //         prop: R.complement(R.equals),
+      //         value: R.complement(R.equals)
+      //       })
+      //     )
+      //   )
+      // ),
 
       // Lift a transformed obj with decl selectors
-      R.lift(
-        (a, b) => {
-          console.log(a)
-          console.log(b)
-        }
-      )(R.__, obj),
-      R.tap(console.log)
+      // R.lift(
+      //   (a, b) => {
+      //     console.log(a)
+      //     console.log(b)
+      //   }
+      // )(R.__, obj),
+      // R.tap(console.log)
 
       // R.useWith(
-      //   (obj1) => console.log(`This is obj1 ${
+      //   (obj1, obj2) => console.log(`This is obj1 ${
       //     obj1
-      //   } and this is`)
+      //   } and this is ${obj2}`)
       //   , [
       //     R.map(
       //       R.map(
@@ -123,15 +130,32 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       //       )
       //     )
       //   ])(obj)
+
+      R.useWith(
+        (obj1, obj2) => console.log(`This is obj1 ${
+          obj1
+        } and this is ${obj2}`)
+        , [
+          R.map(
+            R.map(
+              R.identity
+            )
+          ),
+          R.identity
+        ])(R.__, obj)
+
     )(list)
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
       R.values,
       getNodesBySelectors(validatedTransformations),
+      fromNestedLoop(R.tap(console.log))
+
       // R.transduce(getNodesBySelectors(validatedTransformations), R.flip(R.append), []),
       // R.tap(console.log)
-      getDeclsByProp(validatedTransformations)
+
+      // getDeclsByProp(validatedTransformations)
 
     )(root.nodes)
 
