@@ -107,12 +107,21 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
       // Lift a transformed obj with decl selectors
       // R.lift(
-      //   (a, b) => {
+      //   (a, obj) => {
       //     console.log(a)
       //     console.log(b)
       //   }
       // )(R.__, obj),
       // R.tap(console.log)
+
+      R.map(
+        R.lift(
+          (a, b) => {
+            console.log(a)
+            console.log(b)
+          }
+        )(R.__, obj)
+      )
 
       // R.useWith(
       //   (obj1, obj2) => console.log(`This is obj1 ${
@@ -131,31 +140,21 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       //     )
       //   ])(obj)
 
-      R.useWith(
-        (obj1, obj2) => console.log(`This is obj1 ${
-          obj1
-        } and this is ${obj2}`)
-        , [
-          R.map(
-            R.map(
-              R.identity
-            )
-          ),
-          R.identity
-        ])(R.__, obj)
-
     )(list)
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
       R.values,
       getNodesBySelectors(validatedTransformations),
-      fromNestedLoop(R.tap(console.log))
+      // fromNestedLoop(R.pipe(
+      //   R.view(nodesLens),
+      //   R.tap(console.log)
+      // ))
 
       // R.transduce(getNodesBySelectors(validatedTransformations), R.flip(R.append), []),
       // R.tap(console.log)
 
-      // getDeclsByProp(validatedTransformations)
+      getDeclsByProp(validatedTransformations)
 
     )(root.nodes)
 
