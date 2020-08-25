@@ -32,6 +32,11 @@ const mergeNodesBySelector = R.pipe(
   R.map(mergeNodes)
 )
 
+const mergeObjWithNewValues = (k, l, r) => R.when(
+  k === 'nodes',
+  R.always(r)
+)
+
 module.exports = {
   parseDecl,
   isArray,

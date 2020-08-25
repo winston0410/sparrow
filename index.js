@@ -92,10 +92,9 @@ module.exports = postcss.plugin('postcss-sparrow', ({
             ))
           )
         ),
-        R.map(getSelectors),
+        R.map(getSelectors), // Potential refactor: Break transform selectors array and getNodesBySelector into two functions
         R.map(R.anyPass),
-        R.map(R.filter(R.__, obj)),
-        R.tap(console.log)
+        R.map(R.filter(R.__, obj))
       )(list)
 
     const getDeclsByProp = (list) => (obj) => R.pipe(
