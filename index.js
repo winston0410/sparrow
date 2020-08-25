@@ -39,7 +39,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       })
     ),
     addComparatorFnToSelectors,
-    addComparatorFnToDecls
+    R.tap(console.log)
+    // addComparatorFnToDecls
   )(options.transformations)
 
   return (root, result) => {
@@ -90,9 +91,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
-      R.values,
-      getNodesBySelectors(validatedTransformations),
-      R.tap(console.log)
+      R.values
+      // getNodesBySelectors(validatedTransformations)
       // getDeclsByProp(validatedTransformations)
 
     )(root.nodes)
