@@ -37,6 +37,22 @@ const mergeObjWithNewValues = (k, l, r) => R.when(
   R.always(r)
 )
 
+const shouldIncludeOrExclude = R.ifElse(
+  R.propEq('inclusion', true)
+)
+
+const hasWildCard = R.includes('*')
+
+const ifHasWildCard = R.ifElse(
+  hasWildCard
+)
+
+const fromNestedLoop = (fn) => R.map(
+  R.map(
+    fn
+  )
+)
+
 module.exports = {
   parseDecl,
   isArray,
@@ -44,5 +60,8 @@ module.exports = {
   isBoolean,
   isString,
   getDeclData,
-  mergeNodesBySelector
+  mergeNodesBySelector,
+  shouldIncludeOrExclude,
+  ifHasWildCard,
+  fromNestedLoop
 }

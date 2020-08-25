@@ -9,6 +9,14 @@ const {
   mergeNodesBySelector
 } = require('./utilities/helper.js')
 
+const {
+  addComparatorFnToSelectors
+} = require('./utilities/selectors.js')
+
+const {
+  addComparatorFnToDecls
+} = require('./utilities/decls.js')
+
 module.exports = postcss.plugin('postcss-sparrow', ({
   transformations,
   silentConsole,
@@ -19,8 +27,6 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     placeholderPattern: R.defaultTo(/^\$\(\w*\)/g)(placeholderPattern)
   }
 
-  const hasWildCard = R.includes('*')
-  const selectorsLens = R.lensProp('selectors')
   const declsLens = R.lensProp('decls')
   const nodesLens = R.lensProp('nodes')
 
@@ -31,7 +37,9 @@ module.exports = postcss.plugin('postcss-sparrow', ({
         inclusion: isBoolean,
         decls: isArray
       })
-    )
+    ),
+    addComparatorFnToSelectors,
+    addComparatorFnToDecls
   )(options.transformations)
 
   return (root, result) => {
@@ -39,24 +47,6 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       mergeNodesBySelector,
       R.values
     )(root.nodes)
-
-    const shouldIncludeOrExclude = R.ifElse(
-      R.propEq('inclusion', true)
-    )
-
-    const ifHasWildCard = R.ifElse(
-      hasWildCard
-    )
-
-    const getSelectors = R.prop('selectors')
-    const getDecls = R.prop('decls')
-    const getProp = R.prop('prop')
-    const getValue = R.prop('value')
-
-    const isSelectorEqual = R.propEq('selector')
-    const isSelectorNotEqual = R.complement(isSelectorEqual)
-    const isPropEqual = R.propEq('prop')
-    const isValueEqual = R.propEq('value')
 
     const notEqualNegativeOne = R.complement(R.equals)(-1)
 
@@ -68,32 +58,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       notEqualNegativeOne
     )
 
-    const fromNestedLoop = (fn) => R.map(
-      R.map(
-        fn
-      )
-    )
-
     const getNodesBySelectors = (list) => (obj) =>
       R.pipe(
-        R.map(
-          shouldIncludeOrExclude(
-            R.over(selectorsLens, R.map(
-              ifHasWildCard(
-                R.T, // Always returns true to include all values with R.filter()
-                isSelectorEqual
-              )
-            )),
-            R.over(selectorsLens, R.map(
-              ifHasWildCard(
-                R.F, // Always returns false to exclude all values with R.filter()
-                isSelectorNotEqual
-              )
-            ))
-          )
-        ),
-        R.map(getSelectors), // Potential refactor: Break transform selectors array and getNodesBySelector into two functions
-        R.map(R.anyPass),
         R.map(R.filter(R.__, obj))
       )(list)
 
@@ -121,33 +87,12 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     //     )
     //   )
     // )(list)
-    //
-
-    const addComparatorFnForDecls = R.pipe(
-      R.map(getDecls),
-      fromNestedLoop(
-        R.pipe(
-          shouldIncludeOrExclude(
-            R.evolve({
-              prop: R.equals,
-              value: R.equals
-            }),
-            R.evolve({
-              prop: R.complement(R.equals),
-              value: R.complement(R.equals)
-            })
-          ),
-          R.pick(
-            ['prop', 'value']
-          )
-        )
-      )
-    )(validatedTransformations)
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
       R.values,
-      getNodesBySelectors(validatedTransformations)
+      getNodesBySelectors(validatedTransformations),
+      R.tap(console.log)
       // getDeclsByProp(validatedTransformations)
 
     )(root.nodes)
