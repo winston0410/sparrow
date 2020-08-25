@@ -28,7 +28,6 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     placeholderPattern: R.defaultTo(/^\$\(\w*\)/g)(placeholderPattern)
   }
 
-  const declsLens = R.lensProp('decls')
   const nodesLens = R.lensProp('nodes')
 
   const validatedTransformations = R.pipe(
@@ -39,9 +38,9 @@ module.exports = postcss.plugin('postcss-sparrow', ({
         decls: isArray
       })
     ),
-    addComparatorFnToSelectors
-    // addComparatorFnToDecls,
-    // R.tap(console.log)
+    addComparatorFnToSelectors,
+    addComparatorFnToDecls,
+    R.tap(console.log)
   )(options.transformations)
 
   return (root, result) => {
@@ -93,8 +92,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
-      R.values,
-      getNodesBySelectors(validatedTransformations)
+      R.values
+      // getNodesBySelectors(validatedTransformations)
       // getDeclsByProp(validatedTransformations)
 
     )(root.nodes)
