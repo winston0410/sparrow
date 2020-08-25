@@ -97,7 +97,33 @@ module.exports = postcss.plugin('postcss-sparrow', ({
         R.map(R.filter(R.__, obj))
       )(list)
 
-    const getDeclsByProp = (list) => (obj) => R.pipe(
+    // const getDeclsByProp = (list) => (obj) => R.pipe(
+    //   R.map(getDecls),
+    //   fromNestedLoop(
+    //     R.pipe(
+    //       shouldIncludeOrExclude(
+    //         R.evolve({
+    //           prop: R.equals,
+    //           value: R.equals
+    //         }),
+    //         R.evolve({
+    //           prop: R.complement(R.equals),
+    //           value: R.complement(R.equals)
+    //         })
+    //       ),
+    //       R.pick(
+    //         ['prop', 'value']
+    //       ),
+    //       // (decls) => fromNestedLoop(
+    //       //   R.tap(console.log)
+    //       // )(obj),
+    //       R.tap(console.log)
+    //     )
+    //   )
+    // )(list)
+    //
+
+    const addComparatorFnForDecls = R.pipe(
       R.map(getDecls),
       fromNestedLoop(
         R.pipe(
@@ -113,37 +139,25 @@ module.exports = postcss.plugin('postcss-sparrow', ({
           ),
           R.pick(
             ['prop', 'value']
-          ),
-          // (decls) => fromNestedLoop(
-          //   R.tap(console.log)
-          // )(obj),
-          R.tap(console.log)
+          )
         )
       )
-    )(list)
+    )(validatedTransformations)
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
       R.values,
       getNodesBySelectors(validatedTransformations)
-      // fromNestedLoop(R.pipe(
-      //   R.view(nodesLens),
-      //   R.tap(console.log)
-      // ))
-
-      // R.transduce(getNodesBySelectors(validatedTransformations), R.flip(R.append), []),
-      // R.tap(console.log)
-
       // getDeclsByProp(validatedTransformations)
 
     )(root.nodes)
 
-    const mergeOriginalAndTransformed = R.curry(
-      (original, transformed) => {
-        console.log(original)
-        console.log(transformed)
-      }
-    )
+    // const mergeOriginalAndTransformed = R.curry(
+    //   (original, transformed) => {
+    //     console.log(original)
+    //     console.log(transformed)
+    //   }
+    // )
 
     // root.nodes = transformedNodeList
   }
