@@ -81,10 +81,15 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       R.map(
         R.map(
           shouldIncludeOrExclude(
-            R.evolve({
-              prop: R.equals,
-              value: R.equals
-            }),
+            R.pipe(
+              R.evolve({
+                prop: R.equals,
+                value: R.equals
+              }),
+              R.pick(
+                ['prop', 'value']
+              )
+            ),
             R.evolve({
               prop: R.complement(R.equals),
               value: R.complement(R.equals)
@@ -92,13 +97,40 @@ module.exports = postcss.plugin('postcss-sparrow', ({
           )
         )
       ),
+
+      // Lift a transformed obj with decl selectors
+      R.lift(
+        (a, b) => {
+          console.log(a)
+          console.log(b)
+        }
+      )(R.__, obj),
       R.tap(console.log)
+
+      // R.useWith(
+      //   (obj1) => console.log(`This is obj1 ${
+      //     obj1
+      //   } and this is`)
+      //   , [
+      //     R.map(
+      //       R.map(
+      //         R.identity
+      //       )
+      //     ),
+      //     R.map(
+      //       R.map(
+      //         R.identity
+      //       )
+      //     )
+      //   ])(obj)
     )(list)
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
       R.values,
       getNodesBySelectors(validatedTransformations),
+      // R.transduce(getNodesBySelectors(validatedTransformations), R.flip(R.append), []),
+      // R.tap(console.log)
       getDeclsByProp(validatedTransformations)
 
     )(root.nodes)
