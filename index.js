@@ -10,7 +10,8 @@ const {
 } = require('./utilities/helper.js')
 
 const {
-  addComparatorFnToSelectors
+  addComparatorFnToSelectors,
+  getSelectors
 } = require('./utilities/selectors.js')
 
 const {
@@ -38,9 +39,9 @@ module.exports = postcss.plugin('postcss-sparrow', ({
         decls: isArray
       })
     ),
-    addComparatorFnToSelectors,
-    R.tap(console.log)
-    // addComparatorFnToDecls
+    addComparatorFnToSelectors
+    // addComparatorFnToDecls,
+    // R.tap(console.log)
   )(options.transformations)
 
   return (root, result) => {
@@ -61,6 +62,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const getNodesBySelectors = (list) => (obj) =>
       R.pipe(
+        R.map(getSelectors),
         R.map(R.filter(R.__, obj))
       )(list)
 
@@ -91,8 +93,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
-      R.values
-      // getNodesBySelectors(validatedTransformations)
+      R.values,
+      getNodesBySelectors(validatedTransformations)
       // getDeclsByProp(validatedTransformations)
 
     )(root.nodes)

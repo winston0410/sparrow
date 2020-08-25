@@ -33,5 +33,6 @@ const addComparatorFnToSelectors = R.pipe(
 )
 
 module.exports = {
-  addComparatorFnToSelectors
+  addComparatorFnToSelectors,
+  getSelectors
 }
