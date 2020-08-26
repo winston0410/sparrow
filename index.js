@@ -6,6 +6,7 @@ const {
   isRegExp,
   isBoolean,
   isString,
+  fromNestedLoop,
   mergeNodesBySelector
 } = require('./utilities/helper.js')
 
@@ -63,19 +64,23 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     const getDeclsByProp = (list) => (obj) =>
       R.pipe(
         () => R.map(getDecls)(list),
-        () => console.log(obj)
-        // R.tap(console.log)
-        // R.map(R.filter(R.__, obj))
+        (list) => fromNestedLoop(
+          R.pipe(
+            R.view(nodesLens),
+            (nodes) => fromNestedLoop(
+              R.filter(R.__, nodes)
+            )(list)
+            // R.map(R.map(R.map(R.tap(console.log))))
+          )
+        )(obj)
       )(obj)
 
     const transformedNodeList = R.pipe(
-      mergeNodesBySelector,
-      R.values,
       getNodesBySelectors(validatedTransformations),
       getDeclsByProp(validatedTransformations)
       // R.tap(console.log)
 
-    )(root.nodes)
+    )(mergedNodeList)
 
     // const mergeOriginalAndTransformed = R.curry(
     //   (original, transformed) => {

@@ -31,7 +31,8 @@ const addComparatorFnToDecls = R.pipe(
             })
           ),
           R.dissoc('inclusion'),
-          R.where
+          R.where // For filtering with wildcard
+          // R.whereEq
         )
       )
     )
