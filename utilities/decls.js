@@ -29,10 +29,9 @@ const addComparatorFnToDecls = R.pipe(
               prop: R.complement(R.equals),
               value: R.complement(R.equals)
             })
-          )
-          // R.pick(
-          //   ['prop', 'value']
-          // )
+          ),
+          R.dissoc('inclusion'),
+          R.where
         )
       )
     )
@@ -40,5 +39,6 @@ const addComparatorFnToDecls = R.pipe(
 )
 
 module.exports = {
-  addComparatorFnToDecls
+  addComparatorFnToDecls,
+  getDecls
 }

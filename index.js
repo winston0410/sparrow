@@ -16,8 +16,13 @@ const {
 } = require('./utilities/selectors.js')
 
 const {
-  addComparatorFnToDecls
+  addComparatorFnToDecls,
+  getDecls
 } = require('./utilities/decls.js')
+
+const {
+  nodesLens
+} = require('./utilities/nodes.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
   transformations,
@@ -28,8 +33,6 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     transformations: R.defaultTo([])(transformations),
     placeholderPattern: R.defaultTo(/^\$\(\w*\)/g)(placeholderPattern)
   }
-
-  const nodesLens = R.lensProp('nodes')
 
   const validatedTransformations = R.pipe(
     R.filter(
@@ -57,24 +60,20 @@ module.exports = postcss.plugin('postcss-sparrow', ({
         R.map(R.filter(R.__, obj))
       )(obj)
 
-    // Transformed obj centric, using obj as data
-    // const getNodesBySelectors = R.map(
-    //   R.filter(
-    //     () => R.map(getSelectors)(validatedTransformations)
-    //   )
-    // )
-
     const getDeclsByProp = (list) => (obj) =>
       R.pipe(
+        () => R.map(getDecls)(list),
         () => console.log(obj)
-      )(list)
+        // R.tap(console.log)
+        // R.map(R.filter(R.__, obj))
+      )(obj)
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
       R.values,
       getNodesBySelectors(validatedTransformations),
-      R.tap(console.log)
-      // getDeclsByProp(validatedTransformations)
+      getDeclsByProp(validatedTransformations)
+      // R.tap(console.log)
 
     )(root.nodes)
 
