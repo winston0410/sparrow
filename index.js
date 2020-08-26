@@ -48,31 +48,16 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       R.values
     )(root.nodes)
 
-    const notEqualNegativeOne = R.complement(R.equals)(-1)
-
-    const rejectNegativeResult = R.reject(
-      R.equals(-1)
-    )
-
-    const ifMatchingResultFound = R.when(
-      notEqualNegativeOne
-    )
-
     const getNodesBySelectors = (list) => (obj) =>
       R.pipe(
         R.map(getSelectors),
         R.map(R.filter(R.__, obj))
       )(list)
 
-    const ifEmptyResult = R.ifElse(
-      R.isEmpty
-    )
-
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
       R.values,
-      getNodesBySelectors(validatedTransformations),
-      R.tap(console.log)
+      getNodesBySelectors(validatedTransformations)
       // getDeclsByProp(validatedTransformations)
 
     )(root.nodes)

@@ -53,6 +53,20 @@ const fromNestedLoop = (fn) => R.map(
   )
 )
 
+const notEqualNegativeOne = R.complement(R.equals)(-1)
+
+const rejectNegativeResult = R.reject(
+  R.equals(-1)
+)
+
+const ifMatchingResultFound = R.when(
+  notEqualNegativeOne
+)
+
+const ifEmptyResult = R.ifElse(
+  R.isEmpty
+)
+
 module.exports = {
   parseDecl,
   isArray,
