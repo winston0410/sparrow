@@ -41,9 +41,9 @@ const addComparatorFnToDecls = R.pipe(
               )
             })
           ),
-          R.dissoc('inclusion'),
-          R.where // For filtering with wildcard
-          // R.whereEq
+          // R.dissoc('inclusion'),
+          R.omit(['inclusion', 'newDecl']), // Needs to remove newDecl for using whole object with R.where()
+          R.where
         )
       )
     )
