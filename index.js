@@ -61,7 +61,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
         R.map(R.filter(R.__, obj))
       )(obj)
 
-    const getDeclsByProp = (list) => (obj) =>
+    const getDeclsByPropAndValue = (list) => (obj) =>
       R.pipe(
         () => R.map(getDecls)(list),
         (list) => fromNestedLoop(
@@ -77,7 +77,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
     const transformedNodeList = R.pipe(
       getNodesBySelectors(validatedTransformations),
-      getDeclsByProp(validatedTransformations)
+      getDeclsByPropAndValue(validatedTransformations)
       // R.tap(console.log)
 
     )(mergedNodeList)
