@@ -69,8 +69,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
             R.view(nodesLens),
             (nodes) => fromNestedLoop(
               R.filter(R.__, nodes)
-            )(list)
-            // R.map(R.map(R.map(R.tap(console.log))))
+            )(list),
+            R.map(R.map(R.map(R.tap(console.log))))
           )
         )(obj)
       )(obj)

@@ -14,7 +14,6 @@ const getValue = R.prop('value')
 const isPropEqual = R.propEq('prop')
 const isValueEqual = R.propEq('value')
 
-// TODO: Add logic for wildcard
 const addComparatorFnToDecls = R.pipe(
   R.map(
     R.over(declsLens,
@@ -22,12 +21,24 @@ const addComparatorFnToDecls = R.pipe(
         R.pipe(
           shouldIncludeOrExclude(
             R.evolve({
-              prop: R.equals,
-              value: R.equals
+              prop: ifHasWildCard(
+                R.T,
+                R.equals
+              ),
+              value: ifHasWildCard(
+                R.T,
+                R.equals
+              )
             }),
             R.evolve({
-              prop: R.complement(R.equals),
-              value: R.complement(R.equals)
+              prop: ifHasWildCard(
+                R.F,
+                R.complement(R.equals)
+              ),
+              value: ifHasWildCard(
+                R.F,
+                R.complement(R.equals)
+              )
             })
           ),
           R.dissoc('inclusion'),
