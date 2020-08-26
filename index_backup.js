@@ -6,8 +6,24 @@ const {
   isRegExp,
   isBoolean,
   isString,
+  fromNestedLoop,
   mergeNodesBySelector
 } = require('./utilities/helper.js')
+
+const {
+  addComparatorFnToSelectors,
+  getSelectors,
+  selectorsLens
+} = require('./utilities/selectors.js')
+
+const {
+  addComparatorFnToDecls,
+  getDecls
+} = require('./utilities/decls.js')
+
+const {
+  nodesLens
+} = require('./utilities/nodes.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
   transformations,
@@ -19,9 +35,6 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     placeholderPattern: R.defaultTo(/^\$\(\w*\)/g)(placeholderPattern)
   }
 
-  const hasWildCard = R.includes('*')
-  const selectorsLens = R.lensProp('selectors')
-
   const validatedTransformations = R.pipe(
     R.filter(
       R.where({
@@ -29,7 +42,9 @@ module.exports = postcss.plugin('postcss-sparrow', ({
         inclusion: isBoolean,
         decls: isArray
       })
-    )
+    ),
+    addComparatorFnToSelectors,
+    addComparatorFnToDecls
   )(options.transformations)
 
   return (root, result) => {
@@ -38,69 +53,48 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       R.values
     )(root.nodes)
 
-    const shouldIncludeOrExclude = R.ifElse(
-      R.propEq('inclusion', true)
-    )
+    // Config centric, using list as data
 
-    const getSelectors = R.prop('selectors')
-
-    const isSelectorEqual = R.propEq('selector')
-    const isSelectorNotEqual = R.complement(isSelectorEqual)
-    const isPropEqual = R.propEq('prop')
-    const isValueEqual = R.propEq('value')
-
-    const notEqualNegativeOne = R.complement(R.equals)(-1)
-
-    const filterNegativeResult = R.filter(
-      notEqualNegativeOne
-    )
-
-    const ifMatchingResultFound = R.when(
-      notEqualNegativeOne
-    )
-
-    const getNodesBySelectors = (obj) => R.map(
+    const getNodesBySelectors = (list) => (obj) =>
       R.pipe(
-        shouldIncludeOrExclude(
-          isSelectorEqual,
-          isSelectorNotEqual
-        ),
-        R.findIndex(R.__, obj), // Bug.  -1 will be passed to lensIndex, finding unrelated nodes
-        ifMatchingResultFound(
+        () => R.map(getSelectors)(list),
+        R.map(R.filter(R.__, obj))
+      )(obj)
+
+    const getDeclsByPropAndValue = (list) => (obj) =>
+      R.pipe(
+        () => R.map(getDecls)(list),
+        (list) => fromNestedLoop(
           R.pipe(
-            R.lensIndex,
-            R.view(R.__, obj)
+            R.view(nodesLens),
+            (nodes) => fromNestedLoop(
+              R.filter(R.__, nodes)
+            )(list),
+            R.map(R.map(R.map(R.pipe(
+              // R.prop('remove')()
+              // R.tap(console.log)
+            ))))
           )
-        )
-      )
-    )
+        )(obj)
+      )(obj)
 
-    const getNodesToTransform = (list) => (obj) => R.map(
-      R.pipe(
-        getSelectors,
-        getNodesBySelectors(obj),
-        R.tap(console.log),
-        filterNegativeResult
-      )
-    )(list)
-
-    const getDeclsToTransform = (list) => (obj) => R.map(
-      shouldIncludeOrExclude(
-        R.pipe(
-          R.tap(console.log)
-        ),
-        R.pipe(
-          R.tap(console.log)
-        )
-      )
-    )(list)
+    // const transformDecls = R.pipe(
+    //
+    // )
 
     const transformedNodeList = R.pipe(
-      mergeNodesBySelector,
-      R.values,
-      getNodesToTransform(validatedTransformations)
+      getNodesBySelectors(validatedTransformations),
+      getDeclsByPropAndValue(validatedTransformations)
+      // transformDecls(validatedTransformations)
 
-    )(root.nodes)
+    )(mergedNodeList)
+
+    // const mergeOriginalAndTransformed = R.curry(
+    //   (original, transformed) => {
+    //     console.log(original)
+    //     console.log(transformed)
+    //   }
+    // )
 
     // root.nodes = transformedNodeList
   }

@@ -51,10 +51,14 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
   }
 
-  const getNodesBySelectors = (obj) => R.pipe(
-    getSelectors,
-    R.applyTo(obj)
-  )
+  R.lensIndex(0)
+
+  const getNodesBySelectors = (list) => (obj) =>
+    R.pipe(
+      () => R.map(getSelectors)(list),
+      R.map(R.applyTo(obj)),
+      R.tap(console.log)
+    )(obj)
 
   const getDeclsByPropAndValue = (list) => (obj) =>
     R.pipe(
@@ -64,15 +68,21 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     )(list)
 
   return (root, result) => {
-    R.map(
-      (transformation) => root.walkDecls((decl) => {
-        const node = decl
+    root.walkDecls((decl) => {
+      const node = decl
 
-        return R.when(
-          getNodesBySelectors(node),
-          () => console.log('This node was selected')
-        )(transformation)
-      })
-    )(validatedTransformations)
+      return R.when(
+        getNodesBySelectors(validatedTransformations),
+        () => console.log('Failed to be selected')
+      )(node)
+
+      // return R.when(
+      //   getNodesBySelectors(validatedTransformations),
+      //   R.when(
+      //     getDeclsByPropAndValue(validatedTransformations)
+      //     transformDecls
+      //   )
+      // )(node)
+    })
   }
 })

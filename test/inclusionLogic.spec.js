@@ -51,7 +51,7 @@ describe('Test sparrow', function () {
       const options = {
         transformations: [
           {
-            selectors: ['*', 'body'],
+            selectors: ['p', 'body'],
             inclusion: true,
             decls: [{
               prop: 'font-size',
@@ -65,7 +65,7 @@ describe('Test sparrow', function () {
             }]
           },
           {
-            selectors: ['*'],
+            selectors: ['a'],
             inclusion: false,
             decls: [{
               prop: 'padding',
