@@ -51,27 +51,37 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
   }
 
-  const getNodesBySelectors = (obj) => R.pipe(
+  const getNodesBySelectors = (transformation) => (obj) => R.pipe(
     getSelectors,
     R.applyTo(obj)
-  )
+  )(transformation)
 
-  const getDeclsByPropAndValue = (list) => (obj) =>
+  const getDeclsByPropAndValue = (obj) =>
     R.pipe(
 
       R.tap(console.log)
 
-    )(list)
+    )
 
   return (root, result) => {
     R.map(
       (transformation) => root.walkDecls((decl) => {
         const node = decl
 
-        return R.when(
-          getNodesBySelectors(node),
-          () => console.log('This node was selected')
-        )(transformation)
+        console.log(
+          R.when(
+            getNodesBySelectors(transformation),
+            R.identity
+          )(node)
+        )
+
+        // return R.when(
+        //   getNodesBySelectors(node),
+        //   R.when(
+        //     getDeclsByPropAndValue(node),
+        //     () => console.log('The prop of this node is the targetted once')
+        //   )
+        // )(transformation)
       })
     )(validatedTransformations)
   }

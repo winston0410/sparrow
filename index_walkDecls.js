@@ -78,10 +78,10 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
       // return R.when(
       //   getNodesBySelectors(validatedTransformations),
-      //   R.when(
-      //     getDeclsByPropAndValue(validatedTransformations)
-      //     transformDecls
-      //   )
+      // R.when(
+      //   getDeclsByPropAndValue(validatedTransformations)
+      //   transformDecls
+      // )
       // )(node)
     })
   }
