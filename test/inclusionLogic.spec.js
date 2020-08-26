@@ -56,7 +56,12 @@ describe('Test sparrow', function () {
             decls: [{
               prop: 'font-size',
               value: '18px',
-              inclusion: true
+              inclusion: true,
+              newDecl: {
+                prop: 'font-size',
+                value: '23px',
+                operation: 'replace'
+              }
             }]
           },
           {
@@ -65,7 +70,12 @@ describe('Test sparrow', function () {
             decls: [{
               prop: 'padding',
               value: '5px',
-              inclusion: true
+              inclusion: true,
+              newDecl: {
+                prop: 'font-size',
+                value: '23px',
+                operation: 'remove'
+              }
             }]
           }
         ]
