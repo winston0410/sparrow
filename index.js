@@ -39,8 +39,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       })
     ),
     addComparatorFnToSelectors,
-    addComparatorFnToDecls,
-    R.tap(console.log)
+    addComparatorFnToDecls
   )(options.transformations)
 
   return (root, result) => {
@@ -65,35 +64,15 @@ module.exports = postcss.plugin('postcss-sparrow', ({
         R.map(R.filter(R.__, obj))
       )(list)
 
-    // const getDeclsByProp = (list) => (obj) => R.pipe(
-    //   R.map(getDecls),
-    //   fromNestedLoop(
-    //     R.pipe(
-    //       shouldIncludeOrExclude(
-    //         R.evolve({
-    //           prop: R.equals,
-    //           value: R.equals
-    //         }),
-    //         R.evolve({
-    //           prop: R.complement(R.equals),
-    //           value: R.complement(R.equals)
-    //         })
-    //       ),
-    //       R.pick(
-    //         ['prop', 'value']
-    //       ),
-    //       // (decls) => fromNestedLoop(
-    //       //   R.tap(console.log)
-    //       // )(obj),
-    //       R.tap(console.log)
-    //     )
-    //   )
-    // )(list)
+    const ifEmptyResult = R.ifElse(
+      R.isEmpty
+    )
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
-      R.values
-      // getNodesBySelectors(validatedTransformations)
+      R.values,
+      getNodesBySelectors(validatedTransformations),
+      R.tap(console.log)
       // getDeclsByProp(validatedTransformations)
 
     )(root.nodes)

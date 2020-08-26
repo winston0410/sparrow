@@ -14,6 +14,7 @@ const getValue = R.prop('value')
 const isPropEqual = R.propEq('prop')
 const isValueEqual = R.propEq('value')
 
+// TODO: Add logic for wildcard
 const addComparatorFnToDecls = R.pipe(
   R.map(
     R.over(declsLens,
