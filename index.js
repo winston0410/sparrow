@@ -11,7 +11,8 @@ const {
 
 const {
   addComparatorFnToSelectors,
-  getSelectors
+  getSelectors,
+  selectorsLens
 } = require('./utilities/selectors.js')
 
 const {
@@ -48,16 +49,31 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       R.values
     )(root.nodes)
 
+    // Config centric, using list as data
+
     const getNodesBySelectors = (list) => (obj) =>
       R.pipe(
-        R.map(getSelectors),
+        () => R.map(getSelectors)(list),
         R.map(R.filter(R.__, obj))
+      )(obj)
+
+    // Transformed obj centric, using obj as data
+    // const getNodesBySelectors = R.map(
+    //   R.filter(
+    //     () => R.map(getSelectors)(validatedTransformations)
+    //   )
+    // )
+
+    const getDeclsByProp = (list) => (obj) =>
+      R.pipe(
+        () => console.log(obj)
       )(list)
 
     const transformedNodeList = R.pipe(
       mergeNodesBySelector,
       R.values,
-      getNodesBySelectors(validatedTransformations)
+      getNodesBySelectors(validatedTransformations),
+      R.tap(console.log)
       // getDeclsByProp(validatedTransformations)
 
     )(root.nodes)
