@@ -46,17 +46,7 @@ describe('Test sparrow', function () {
               value: '5px',
               inclusion: true,
               newDecl: {
-                prop: 'font-size',
-                value: '23px',
-                operation: 'replace'
-              }
-            },
-            {
-              prop: 'font-weight',
-              value: '700',
-              inclusion: true,
-              newDecl: {
-                prop: 'font-size',
+                prop: 'padding',
                 value: '23px',
                 operation: 'replace'
               }

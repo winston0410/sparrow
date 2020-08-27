@@ -33,8 +33,14 @@ const addComparatorFnToSelectors = R.pipe(
   )
 )
 
+const getNodesBySelectors = (transformation) => (obj) => R.pipe(
+  getSelectors,
+  R.applyTo(obj)
+)(transformation)
+
 module.exports = {
   addComparatorFnToSelectors,
   getSelectors,
-  selectorsLens
+  selectorsLens,
+  getNodesBySelectors
 }

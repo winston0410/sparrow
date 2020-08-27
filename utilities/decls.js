@@ -8,6 +8,7 @@ const {
 
 const declsLens = R.lensProp('decls')
 const getDecls = R.prop('decls')
+const getNewDecl = R.prop('newDecl')
 const getProp = R.prop('prop')
 const getValue = R.prop('value')
 
@@ -49,7 +50,21 @@ const addComparatorFnToDecls = R.pipe(
   )
 )
 
+const getDeclsByPropAndValue = (transformation) => (obj) => R.pipe(
+  getDecls,
+  R.map(
+    R.pipe(
+      R.dissoc('newDecl'),
+      R.where
+    )
+  ),
+  R.anyPass,
+  R.applyTo(obj)
+)(transformation)
+
 module.exports = {
   addComparatorFnToDecls,
-  getDecls
+  getDecls,
+  getNewDecl,
+  getDeclsByPropAndValue
 }

@@ -12,13 +12,16 @@ const {
 
 const {
   addComparatorFnToSelectors,
+  getNodesBySelectors,
   getSelectors,
   selectorsLens
 } = require('./utilities/selectors.js')
 
 const {
   addComparatorFnToDecls,
-  getDecls
+  getDeclsByPropAndValue,
+  getDecls,
+  getNewDecl
 } = require('./utilities/decls.js')
 
 const {
@@ -49,24 +52,12 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
   const transformDecls = (transformation) => (obj) => R.pipe(
     getDecls,
-    R.tap(console.log)
-  )(transformation)
-
-  const getNodesBySelectors = (transformation) => (obj) => R.pipe(
-    getSelectors,
-    R.applyTo(obj)
-  )(transformation)
-
-  const getDeclsByPropAndValue = (transformation) => (obj) => R.pipe(
-    getDecls,
     R.map(
       R.pipe(
-        R.dissoc('newDecl'),
-        R.where
+        getNewDecl,
+        R.tap(console.log)
       )
-    ),
-    R.anyPass,
-    R.applyTo(obj)
+    )
   )(transformation)
 
   return (root, result) => {
