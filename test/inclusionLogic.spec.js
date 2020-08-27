@@ -20,6 +20,7 @@ describe('Test sparrow', function () {
     css = `
     body{
       padding: 5px;
+      font-weight: 400;
     }`
 
     beforeTransformation = []
@@ -76,11 +77,13 @@ describe('Test sparrow', function () {
           from: undefined
         }).then(result => {
           result.root.walkDecls((decl) => {
+            console.log(decl)
             afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
           })
         })
 
-      console.log(afterTransformation)
+      // console.log(afterTransformation)
+
       // options.transformations.forEach(({ target, isInclude }, index) => {
       //   const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
       //

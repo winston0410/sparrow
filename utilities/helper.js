@@ -65,13 +65,20 @@ const declToString = R.curry(
   (prop, value) => `${prop}: ${value}`
 )
 
+const convertDeclToString = R.converge(declToString, [R.prop('prop'), R.prop('value')])
+
 const transformDeclsByOperations = (obj) => R.cond([
   [ifOperationEqual('replace'), R.pipe(
-    R.converge(declToString, [R.prop('prop'), R.prop('value')]),
+    convertDeclToString,
     (v) => obj.replaceWith(v)
   )],
-  [ifOperationEqual('remove'), () => console.log('You are removing node')],
-  [ifOperationEqual('before'), () => console.log('You are inserting node before this node!')],
+  [ifOperationEqual('remove'), R.pipe(
+    (v) => obj.remove()
+  )],
+  [ifOperationEqual('before'), R.pipe(
+    convertDeclToString,
+    (v) => obj.before(v)
+  )],
   [ifOperationEqual('custom'), () => console.log('You are using custom logic on this node')]
 ])
 
