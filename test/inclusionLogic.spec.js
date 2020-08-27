@@ -6,15 +6,29 @@ const {
   convertPlaceholdersToValues,
   listDeclData
 } = require('../utilities/helper.js')
-const R = require('ramda')
 
+const {
+  addComparatorFnToSelectors,
+  getNodesBySelectors,
+  getSelectors,
+  selectorsLens
+} = require('../utilities/selectors.js')
+
+const {
+  addComparatorFnToDecls,
+  getDeclsByPropAndValue,
+  getDecls,
+  getNewDecl
+} = require('../utilities/decls.js')
+
+const R = require('ramda')
 const chai = require('chai')
 const expect = chai.expect
 chai.use(require('chai-match'))
 chai.use(require('chai-arrays'))
 
 describe('Test sparrow', function () {
-  let css, beforeTransformation, afterTransformation, declarationTemplate
+  let css
 
   beforeEach(function () {
     css = `
@@ -22,17 +36,6 @@ describe('Test sparrow', function () {
       padding: 5px;
       font-weight: 400;
     }`
-
-    beforeTransformation = []
-    afterTransformation = []
-
-    postcss
-      .parse(css, {
-        from: undefined
-      })
-      .walkDecls((decl) => {
-        beforeTransformation.push([decl.parent.selector, decl.prop, decl.value])
-      })
   })
 
   describe('if operation is remove', function () {
@@ -50,15 +53,6 @@ describe('Test sparrow', function () {
                 prop: 'padding',
                 value: '10px',
                 operation: 'replace'
-              }
-            },
-            {
-              prop: 'padding',
-              value: '5px',
-              inclusion: true,
-              newDecl: {
-                operation: 'custom',
-                callback: (x) => 'hello'
               }
             }]
           },
@@ -86,8 +80,7 @@ describe('Test sparrow', function () {
           from: undefined
         }).then(result => {
           result.root.walkDecls((decl) => {
-            // console.log(decl)
-            afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
+            console.log(decl)
           })
         })
 

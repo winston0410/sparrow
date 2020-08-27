@@ -78,10 +78,10 @@ const transformDeclsByOperations = (obj) => R.cond([
   [ifOperationEqual('before'), R.pipe(
     convertDeclToString,
     (v) => obj.before(v)
-  )],
-  [ifOperationEqual('custom'), R.pipe(
-    () => console.log('You are using custom logic on this node')
   )]
+  // [ifOperationEqual('custom'), R.pipe(
+  //   () => console.log('You are using custom logic on this node')
+  // )]
 ])
 
 module.exports = {

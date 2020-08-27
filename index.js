@@ -78,7 +78,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
           )
         )(node)
 
-        console.log(result)
+        // console.log(result)
       })
     )(validatedTransformations)
   }
