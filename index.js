@@ -9,7 +9,8 @@ const {
   fromNestedLoop,
   mergeNodesBySelector,
   ifOperationEqual,
-  transformDeclsByOperations
+  transformDeclsByOperations,
+  validateConfig
 } = require('./utilities/helper.js')
 
 const {
@@ -40,17 +41,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     placeholderPattern: R.defaultTo(/^\$\(\w*\)/g)(placeholderPattern)
   }
 
-  const validatedTransformations = R.pipe(
-    R.filter(
-      R.where({
-        selectors: isArray,
-        inclusion: isBoolean,
-        decls: isArray
-      })
-    ),
-    addComparatorFnToSelectors,
-    addComparatorFnToDecls
-  )(options.transformations)
+  const validatedTransformations = validateConfig(options.transformations)
 
   const transformDecls = (transformation) => (obj) => R.pipe(
     getDecls,
