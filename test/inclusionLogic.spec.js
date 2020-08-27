@@ -17,21 +17,9 @@ describe('Test sparrow', function () {
   let css, beforeTransformation, afterTransformation, declarationTemplate
 
   beforeEach(function () {
-    css = `p #hello{
-      font-size: 18px;
-      margin: rfs(10rem);
-    }
-
+    css = `
     body{
       padding: 5px;
-    }
-
-    a{
-      font-size: 20px;
-    }
-
-    p #hello{
-      color: red
     }`
 
     beforeTransformation = []
@@ -63,21 +51,21 @@ describe('Test sparrow', function () {
                 operation: 'replace'
               }
             }]
-          },
-          {
-            selectors: ['a'],
-            inclusion: false,
-            decls: [{
-              prop: 'padding',
-              value: '5px',
-              inclusion: true,
-              newDecl: {
-                prop: 'font-size',
-                value: '23px',
-                operation: 'remove'
-              }
-            }]
           }
+          // {
+          //   selectors: ['a'],
+          //   inclusion: false,
+          //   decls: [{
+          //     prop: 'padding',
+          //     value: '5px',
+          //     inclusion: true,
+          //     newDecl: {
+          //       prop: 'font-size',
+          //       value: '23px',
+          //       operation: 'remove'
+          //     }
+          //   }]
+          // }
         ]
       }
 

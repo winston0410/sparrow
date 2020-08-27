@@ -7,6 +7,7 @@ const {
 
 const selectorsLens = R.lensProp('selectors')
 const getSelectors = R.prop('selectors')
+
 const isSelectorEqual = R.propEq('selector')
 const isSelectorNotEqual = R.complement(isSelectorEqual)
 
@@ -29,7 +30,8 @@ const addComparatorFnToSelectors = R.pipe(
   ),
   R.map(
     R.over(selectorsLens, R.anyPass)
-  )
+  ),
+  R.tap(console.log)
 )
 
 module.exports = {
