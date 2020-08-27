@@ -30,8 +30,7 @@ const addComparatorFnToSelectors = R.pipe(
   ),
   R.map(
     R.over(selectorsLens, R.anyPass)
-  ),
-  R.tap(console.log)
+  )
 )
 
 module.exports = {

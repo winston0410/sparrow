@@ -57,9 +57,9 @@ module.exports = postcss.plugin('postcss-sparrow', ({
   )(transformation)
 
   const getDeclsByPropAndValue = (transformation) => (obj) => R.pipe(
-
-    R.tap(console.log)
-
+    getDecls,
+    R.anyPass,
+    R.applyTo(obj)
   )(transformation)
 
   return (root, result) => {
@@ -74,7 +74,10 @@ module.exports = postcss.plugin('postcss-sparrow', ({
           ),
           R.when(
             getDeclsByPropAndValue(transformation),
-            () => console.log('The prop of this node is the targetted once')
+            (v) => {
+              console.log('Found matching node')
+              console.log(v)
+            }
           )
         )(node)
       })

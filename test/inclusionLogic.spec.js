@@ -42,8 +42,18 @@ describe('Test sparrow', function () {
             selectors: ['p', 'body'],
             inclusion: true,
             decls: [{
-              prop: 'font-size',
-              value: '18px',
+              prop: 'padding',
+              value: '5px',
+              inclusion: true,
+              newDecl: {
+                prop: 'font-size',
+                value: '23px',
+                operation: 'replace'
+              }
+            },
+            {
+              prop: 'font-weight',
+              value: '700',
               inclusion: true,
               newDecl: {
                 prop: 'font-size',
@@ -51,21 +61,21 @@ describe('Test sparrow', function () {
                 operation: 'replace'
               }
             }]
+          },
+          {
+            selectors: ['b'],
+            inclusion: true,
+            decls: [{
+              prop: 'padding',
+              value: '5px',
+              inclusion: true,
+              newDecl: {
+                prop: 'font-size',
+                value: '23px',
+                operation: 'remove'
+              }
+            }]
           }
-          // {
-          //   selectors: ['a'],
-          //   inclusion: false,
-          //   decls: [{
-          //     prop: 'padding',
-          //     value: '5px',
-          //     inclusion: true,
-          //     newDecl: {
-          //       prop: 'font-size',
-          //       value: '23px',
-          //       operation: 'remove'
-          //     }
-          //   }]
-          // }
         ]
       }
 
