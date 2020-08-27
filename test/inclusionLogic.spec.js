@@ -35,6 +35,10 @@ describe('Test sparrow', function () {
     body{
       padding: 5px;
       font-weight: 400;
+    }
+
+    a{
+      color: #be132d;
     }`
   })
 
@@ -51,21 +55,7 @@ describe('Test sparrow', function () {
               inclusion: true,
               newDecl: {
                 prop: 'padding',
-                value: '10px',
-                operation: 'replace'
-              }
-            }]
-          },
-          {
-            selectors: ['b'],
-            inclusion: true,
-            decls: [{
-              prop: 'padding',
-              value: '5px',
-              inclusion: true,
-              newDecl: {
-                prop: 'font-size',
-                value: '23px',
+                value: '5px',
                 operation: 'remove'
               }
             }]
@@ -73,29 +63,33 @@ describe('Test sparrow', function () {
         ]
       }
 
+      const validatedTransformations = R.pipe(
+        addComparatorFnToSelectors,
+        addComparatorFnToDecls
+      )(options.transformations)
+
       await postcss([
         sparrow(options)
       ])
         .process(css, {
           from: undefined
         }).then(result => {
-          result.root.walkDecls((decl) => {
-            console.log(decl)
-          })
+          R.map(
+            (transformation) => result.root.walkDecls((decl) => {
+              const result = R.ifElse(
+                R.pipe(
+                  R.prop('parent'),
+                  getNodesBySelectors(transformation),
+                  getDeclsByPropAndValue(transformation)
+                ),
+                R.T,
+                R.F
+              )(decl)
+
+              expect(result).to.be.false // Which means matching decl cannot be found and has been removed
+            })
+          )(validatedTransformations)
         })
-
-      // console.log(afterTransformation)
-
-      // options.transformations.forEach(({ target, isInclude }, index) => {
-      //   const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
-      //
-      //   // Expect target cannot be found in trasnformedData
-      //   expect(isMatchingDecl({
-      //     decl: afterTransformation[index],
-      //     targetDecl: targetDeclData,
-      //     isInclude: isInclude
-      //   })).to.equal(!isInclude)
-      // })
     })
   })
 

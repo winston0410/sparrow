@@ -2,14 +2,6 @@ const postcss = require('postcss')
 const R = require('ramda')
 const chalk = require('chalk')
 
-const {
-  addComparatorFnToSelectors
-} = require('./selectors.js')
-
-const {
-  addComparatorFnToDecls
-} = require('./decls.js')
-
 const isCorrectType = (type) => R.is(type)
 
 const isArray = isCorrectType(Array)
@@ -92,18 +84,6 @@ const transformDeclsByOperations = (obj) => R.cond([
   // )]
 ])
 
-const validateConfig = R.pipe(
-  R.filter(
-    R.where({
-      selectors: isArray,
-      inclusion: isBoolean,
-      decls: isArray
-    })
-  ),
-  addComparatorFnToSelectors,
-  addComparatorFnToDecls
-)
-
 module.exports = {
   isArray,
   isRegExp,
@@ -114,6 +94,5 @@ module.exports = {
   ifHasWildCard,
   fromNestedLoop,
   ifOperationEqual,
-  transformDeclsByOperations,
-  validateConfig
+  transformDeclsByOperations
 }
