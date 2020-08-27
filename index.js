@@ -7,7 +7,8 @@ const {
   isBoolean,
   isString,
   fromNestedLoop,
-  mergeNodesBySelector
+  mergeNodesBySelector,
+  ifOperationEqual
 } = require('./utilities/helper.js')
 
 const {
@@ -55,6 +56,11 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     R.map(
       R.pipe(
         getNewDecl,
+        R.cond([
+          [ifOperationEqual('replace'), R.tap(console.log)],
+          [ifOperationEqual('remove'), () => console.log('You are removing node')],
+          [ifOperationEqual('before'), () => console.log('You are inserting node before this node!')]
+        ]),
         R.tap(console.log)
       )
     )

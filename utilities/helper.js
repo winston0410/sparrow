@@ -67,6 +67,11 @@ const ifEmptyResult = R.ifElse(
   R.isEmpty
 )
 
+const ifOperationEqual = (operation) => R.pipe(
+  R.prop('operation'),
+  R.equals(operation)
+)
+
 module.exports = {
   parseDecl,
   isArray,
@@ -77,5 +82,6 @@ module.exports = {
   mergeNodesBySelector,
   shouldIncludeOrExclude,
   ifHasWildCard,
-  fromNestedLoop
+  fromNestedLoop,
+  ifOperationEqual
 }
