@@ -76,15 +76,14 @@ describe('Test sparrow', function () {
         }).then(result => {
           R.map(
             (transformation) => result.root.walkDecls((decl) => {
-              const result = R.ifElse(
+              const result =
                 R.pipe(
                   R.prop('parent'),
-                  getNodesBySelectors(transformation),
-                  getDeclsByPropAndValue(transformation)
-                ),
-                R.T,
-                R.F
-              )(decl)
+                  R.allPass([
+                    getNodesBySelectors(transformation),
+                    getDeclsByPropAndValue(transformation)
+                  ])
+                )(decl)
 
               expect(result).to.be.false // Which means matching decl cannot be found and has been removed
             })
@@ -93,56 +92,54 @@ describe('Test sparrow', function () {
     })
   })
 
-  describe('if operation is replace', function () {
-    it('should replace the target declaration', async function () {
-      const options = {
-        transformations: [
-          {
-            selectors: ['p', 'body'],
-            inclusion: true,
-            decls: [{
-              prop: 'padding',
-              value: '5px',
-              inclusion: true,
-              newDecl: {
-                prop: 'padding',
-                value: '10px',
-                operation: 'replace'
-              }
-            }]
-          }
-        ]
-      }
-
-      const validatedTransformations = R.pipe(
-        addComparatorFnToSelectors,
-        addComparatorFnToDecls
-      )(options.transformations)
-
-      await postcss([
-        sparrow(options)
-      ])
-        .process(css, {
-          from: undefined
-        }).then(result => {
-          R.map(
-            (transformation) => result.root.walkDecls((decl) => {
-              const result = R.ifElse(
-                R.pipe(
-                  R.prop('parent'),
-                  getNodesBySelectors(transformation),
-                  getDeclsByPropAndValue(transformation)
-                ),
-                R.T,
-                R.F
-              )(decl)
-
-              expect(result).to.be.false
-            })
-          )(validatedTransformations)
-        })
-    })
-  })
+  // describe('if operation is replace', function () {
+  //   it('should replace the target declaration', async function () {
+  //     const options = {
+  //       transformations: [
+  //         {
+  //           selectors: ['p', 'body'],
+  //           inclusion: true,
+  //           decls: [{
+  //             prop: 'padding',
+  //             value: '5px',
+  //             inclusion: true,
+  //             newDecl: {
+  //               prop: 'padding',
+  //               value: '10px',
+  //               operation: 'replace'
+  //             }
+  //           }]
+  //         }
+  //       ]
+  //     }
+  //
+  //     const validatedTransformations = R.pipe(
+  //       addComparatorFnToSelectors,
+  //       addComparatorFnToDecls
+  //     )(options.transformations)
+  //
+  //     await postcss([
+  //       sparrow(options)
+  //     ])
+  //       .process(css, {
+  //         from: undefined
+  //       }).then(result => {
+  //         R.map(
+  //           (transformation) => result.root.walkDecls((decl) => {
+  //             const result = R.pipe(
+  //               R.prop('parent'),
+  //               R.when(
+  //                 getNodesBySelectors(transformation),
+  //
+  //               )
+  //             )(decl)
+  //
+  //             expect(result).to.be.true
+  //           })
+  //         )(validatedTransformations)
+  //       })
+  //   })
+  // })
 
   //
   // describe('if operation is before', function () {
