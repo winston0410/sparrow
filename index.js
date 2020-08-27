@@ -47,9 +47,10 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     addComparatorFnToDecls
   )(options.transformations)
 
-  const transformDecls = () => {
-
-  }
+  const transformDecls = (transformation) => (obj) => R.pipe(
+    getDecls,
+    R.tap(console.log)
+  )(transformation)
 
   const getNodesBySelectors = (transformation) => (obj) => R.pipe(
     getSelectors,
@@ -58,6 +59,12 @@ module.exports = postcss.plugin('postcss-sparrow', ({
 
   const getDeclsByPropAndValue = (transformation) => (obj) => R.pipe(
     getDecls,
+    R.map(
+      R.pipe(
+        R.dissoc('newDecl'),
+        R.where
+      )
+    ),
     R.anyPass,
     R.applyTo(obj)
   )(transformation)
@@ -74,10 +81,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
           ),
           R.when(
             getDeclsByPropAndValue(transformation),
-            (v) => {
-              console.log('Found matching node')
-              console.log(v)
-            }
+            transformDecls(transformation)
           )
         )(node)
       })

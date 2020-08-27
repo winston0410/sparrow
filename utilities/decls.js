@@ -41,9 +41,8 @@ const addComparatorFnToDecls = R.pipe(
               )
             })
           ),
-          // R.dissoc('inclusion'),
-          R.omit(['inclusion', 'newDecl']), // Needs to remove newDecl for using whole object with R.where()
-          R.where
+          R.dissoc('inclusion')
+          // Rempve newDecl and apply R.where() in another function, in order to preserve data in the validatedTransformations object.
         )
       )
     )
