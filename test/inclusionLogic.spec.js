@@ -80,6 +80,7 @@ describe('Test sparrow', function () {
           })
         })
 
+      console.log(afterTransformation)
       // options.transformations.forEach(({ target, isInclude }, index) => {
       //   const targetDeclData = R.pipe(parseDecl, listDeclData)(target)
       //

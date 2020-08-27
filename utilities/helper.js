@@ -61,6 +61,20 @@ const ifOperationEqual = (operation) => R.pipe(
   R.equals(operation)
 )
 
+const declToString = R.curry(
+  (prop, value) => `${prop}: ${value}`
+)
+
+const transformDeclsByOperations = (obj) => R.cond([
+  [ifOperationEqual('replace'), R.pipe(
+    R.converge(declToString, [R.prop('prop'), R.prop('value')]),
+    (v) => obj.replaceWith(v)
+  )],
+  [ifOperationEqual('remove'), () => console.log('You are removing node')],
+  [ifOperationEqual('before'), () => console.log('You are inserting node before this node!')],
+  [ifOperationEqual('custom'), () => console.log('You are using custom logic on this node')]
+])
+
 module.exports = {
   isArray,
   isRegExp,
@@ -70,5 +84,6 @@ module.exports = {
   shouldIncludeOrExclude,
   ifHasWildCard,
   fromNestedLoop,
-  ifOperationEqual
+  ifOperationEqual,
+  transformDeclsByOperations
 }
