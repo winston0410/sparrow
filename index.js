@@ -67,7 +67,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
       (transformation) => root.walkDecls((decl) => {
         const node = decl
 
-        R.when(
+        const result = R.when(
           R.pipe(
             R.prop('parent'),
             getNodesBySelectors(transformation)
@@ -77,6 +77,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
             transformDecls(transformation)
           )
         )(node)
+
+        console.log(result)
       })
     )(validatedTransformations)
   }

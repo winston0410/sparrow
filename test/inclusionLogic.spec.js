@@ -48,8 +48,17 @@ describe('Test sparrow', function () {
               inclusion: true,
               newDecl: {
                 prop: 'padding',
-                value: '23px',
+                value: '10px',
                 operation: 'replace'
+              }
+            },
+            {
+              prop: 'padding',
+              value: '5px',
+              inclusion: true,
+              newDecl: {
+                operation: 'custom',
+                callback: (x) => 'hello'
               }
             }]
           },
@@ -77,7 +86,7 @@ describe('Test sparrow', function () {
           from: undefined
         }).then(result => {
           result.root.walkDecls((decl) => {
-            console.log(decl)
+            // console.log(decl)
             afterTransformation.push([decl.parent.selector, decl.prop, decl.value])
           })
         })
