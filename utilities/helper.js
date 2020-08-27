@@ -2,17 +2,6 @@ const postcss = require('postcss')
 const R = require('ramda')
 const chalk = require('chalk')
 
-const parseDecl = (decl) => postcss.parse(decl, { from: undefined }).first.first
-
-const getDeclData = (data) => (decl) => {
-  const lens = R.lensPath(data.split('.'))
-  return R.view(lens)(parseDecl(decl))
-}
-
-const parseSelector = getDeclData('parent.selector')
-const parseProp = getDeclData('prop')
-const parseValue = getDeclData('value')
-
 const isCorrectType = (type) => R.is(type)
 
 const isArray = isCorrectType(Array)
@@ -73,12 +62,10 @@ const ifOperationEqual = (operation) => R.pipe(
 )
 
 module.exports = {
-  parseDecl,
   isArray,
   isRegExp,
   isBoolean,
   isString,
-  getDeclData,
   mergeNodesBySelector,
   shouldIncludeOrExclude,
   ifHasWildCard,
