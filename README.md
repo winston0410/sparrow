@@ -4,14 +4,17 @@
 
 A PostCSS plugin that helps you **search and remove, replace, append or prepend CSS declarations** without the need of writing another PostCSS plugin. Avoid the hassle of learning new APIs again for using a new PostCSS plugin.
 
+
 ```css
 /* Original Input */
 .foo {
-    font-size: 4px;
+  padding: 4px;
+  font-size: 20px;
 }
 
-.bar{
-  font-size: 4px;
+.bar {
+  margin: 50px;
+  padding: 4px;
 }
 ```
 
@@ -25,10 +28,16 @@ module.exports = {
     require('postcss-sparrow')({
       transformations: [
         {
-          targets: ['$(selector){font-size: 4px}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
-          values: ['font-size: 4rem'], //Value for replacing, appending or prepending target value. Can be omitted if the operation: 'remove'
-          operation: 'replace', // remove, replace, before, after
-          isInclude: true //Include or exclude the target; default to true for inclusion
+          selectors: ['*'],
+          inclusion: true,
+          decls: [{
+            prop: 'padding',
+            value: '4px',
+            inclusion: true,
+            newDecl: {
+              operation: 'remove'
+            }
+          }]
         }
       ]
     })
@@ -39,60 +48,11 @@ module.exports = {
 ```css
 /* After the transformation of sparrow*/
 .foo {
-  font-size: 4rem;
+  font-size: 20px;
 }
 
-.bar{
-  font-size: 4rem;
-}
-```
-
-<!-- Remove -->
-
- ```css
-/* Original Input */
-.foo {
-    font-size: 4px;
-    width: 100%;
-    margin: 10%;
-    font-weight: 700;
-}
-
-.bar{
-  font-size: 4px;
-  height: 10%;
-}
-```
-
-```javascript
-//postcss.config.js or other files you use to config PostCSS
-
-module.exports = {
-  plugins: [
-    //Other plugins...
-
-    require('postcss-sparrow')({
-      transformations: [
-        {
-          targets: ['$(selector){$(prop): $(value)%}'], // CSS declaration with placeholders.  This will target any selector with font-size: 4px as its rule.
-          operation: 'remove', // remove, replace, before, after
-          isInclude: true
-        }
-      ]
-    })
-  ]
-}
-```
-
-```css
-/* After the transformation of sparrow*/
-.foo {
-  font-size: 4px;
-  font-weight: 700;
-}
-
-.bar{
-  font-size: 4px;
+.bar {
+  margin: 50px;
 }
 ```
 
@@ -124,19 +84,26 @@ module.exports = {
     //Other plugins...
 
     require('postcss-sparrow')({
-      transformations: [
-        {
-          targets: ['$(a){font-size: 20px}'], // css declaration with placeholders
-          values: ['font-size: 19px'], //Value for replacing, appending or prepending target value. Can be omitted if the operation: 'remove'
-          operation: 'after', // remove, replace, before, after
-          isInclude: true
-        }
-      ]
-    })
+            transformations: [
+              {
+                selectors: ['h1', 'h2', 'h3'], //An array of selectors you want to target
+                inclusion: true, //Use inclusion or exclusion logic on the selectors array
+                decls: [{ //An array of CSS declarations which you want to transform or target
+                  prop: 'font-family', //Property name
+                  value: '*', //Value name, using wildcard * will select all values
+                  inclusion: true, //Use inclusion or exclusion logic for both prop and value field
+                  newDecl: { // An object of CSS declaration which you use for transformation
+                    prop: 'font-weight', //Prop and value are unnecessary for 'remove' operation
+                    value: '700',
+                    operation: 'before' //Accepts 'remove', 'replace', 'before'
+                  }
+                }]
+              }
+            ]
+          })
   ]
 }
 ```
 
 ## API Reference
-
 TODO
