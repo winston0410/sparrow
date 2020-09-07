@@ -43,29 +43,35 @@ describe('Test sparrow', function () {
     }`
   })
 
-  describe('if wildcard is used as selector and inclusion is set to true', function () {
-    it('should select and return all declarations', async function () {
-      const options = {
-        transformations: [
-          {
-            selectors: ['*'],
-            inclusion: true,
-            callback: () => {
+  describe('if wildcard is used as selector', function () {
+    describe('if inclusion is set to true', function () {
+      it('should select and return all declarations', async function () {
+        const options = {
+          transformations: [
+            {
+              selectors: ['*'],
+              inclusion: true,
+              callback: () => {
 
+              }
             }
-          }
-        ]
-      }
+          ]
+        }
 
-      const result = await postcss([
-        sparrow(options)
-      ])
-        .process(css, {
-          from: undefined
-        })// Need to get all decls in an array
-      // Use root.walkDecls
+        const result = await postcss([
+          sparrow(options)
+        ])
+          .process(css, {
+            from: undefined
+          })// Need to get all decls in an array
+        // Use root.walkDecls
 
-      console.log(result)
+        console.log(result)
+      })
+    })
+
+    describe('if inclusion is set to false', function () {
+
     })
   })
 })
