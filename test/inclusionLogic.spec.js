@@ -51,6 +51,19 @@ describe('Test sparrow', function () {
       })
   })
 
+  describe('if wildcard is used as selector and inclusion is set to true', function () {
+    it('should select and return all declarations', function () {
+      const options = {
+        transformations: [
+          {
+            selectors: ['*'],
+            inclusion: true
+          }
+        ]
+      }
+    })
+  })
+
   // describe('if operation is remove', function () {
   //   it('should remove the target declaration', async function () {
   //     const options = {
