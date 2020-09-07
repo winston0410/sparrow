@@ -71,17 +71,21 @@ describe('Test sparrow', function () {
 
     describe('if inclusion is set to false', function () {
       it('should not select any declarations', async function () {
+        const spy = sinon.spy()
+
         const options = {
           transformations: [
             {
               selectors: ['*'],
               inclusion: false,
               callback: (x) => {
-                // Do transformation here
+                spy()
               }
             }
           ]
         }
+
+        expect(spy.notCalled)
       })
     })
   })
