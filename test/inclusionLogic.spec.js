@@ -1,25 +1,25 @@
 const postcss = require('postcss')
-const sparrow = require('../index.js')
+const sparrow = require('../src/index.js')
 const {
   isMatchingDecl,
   parseDecl,
   convertPlaceholdersToValues,
   listDeclData
-} = require('../utilities/helper.js')
+} = require('../src/utilities/helper.js')
 
 const {
   addComparatorFnToSelectors,
   getNodesBySelectors,
   getSelectors,
   selectorsLens
-} = require('../utilities/selectors.js')
+} = require('../src/utilities/selectors.js')
 
 const {
   addComparatorFnToDecls,
   getDeclsByPropAndValue,
   getDecls,
   getNewDecl
-} = require('../utilities/decls.js')
+} = require('../src/utilities/decls.js')
 
 const R = require('ramda')
 const chai = require('chai')
