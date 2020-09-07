@@ -28,7 +28,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     R.filter(
       R.where({
         selectors: isArray,
-        inclusion: isBoolean
+        inclusion: isBoolean,
+        callbacks: isArray
       })
     ),
     addComparatorFnToSelectors
