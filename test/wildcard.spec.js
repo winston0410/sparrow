@@ -49,10 +49,10 @@ describe('Test sparrow', function () {
         const options = {
           transformations: [
             {
-              selectors: ['*'],
+              selectors: ['body'],
               inclusion: true,
-              callback: () => {
-
+              callback: (x) => {
+                console.log('hello world')
               }
             }
           ]
@@ -66,7 +66,7 @@ describe('Test sparrow', function () {
           })// Need to get all decls in an array
         // Use root.walkDecls
 
-        console.log(result)
+        // console.log(result)
       })
     })
 

@@ -28,8 +28,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     R.filter(
       R.where({
         selectors: isArray,
-        inclusion: isBoolean,
-        decls: isArray
+        inclusion: isBoolean
       })
     ),
     addComparatorFnToSelectors
@@ -38,19 +37,13 @@ module.exports = postcss.plugin('postcss-sparrow', ({
   return (root, result) => {
     R.map(
       (transformation) => root.walkDecls((decl) => {
-        const node = decl
-
         const result = R.when(
           R.pipe(
             R.prop('parent'),
             getNodesBySelectors(transformation)
           ),
-          R.identity
-        )(node)
-
-        return result
-
-        console.log(result)
+          transformation.callback
+        )(decl)
       })
     )(validatedTransformations)
   }
