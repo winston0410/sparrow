@@ -10,6 +10,7 @@ A PostCSS plugin that helps you **search CSS declarations** by **selectors**. Av
 .foo {
   padding: 4px;
   font-size: 20px;
+  letter-spacing: 10px;
 }
 
 .bar {
@@ -34,7 +35,12 @@ module.exports = {
             (decl) => {
               //Decl is the declaration object selected based on your options.
               //Do transformation to decl here
-            }  
+              if(decl.prop === 'padding'){
+                decl.remove()
+              }
+            },
+            //You can also import plugins here
+            require("postcss-sparrow-auto-text-indent").default  
           ]
         }
       ]
@@ -47,6 +53,8 @@ module.exports = {
 /* After the transformation of sparrow*/
 .foo {
   font-size: 20px;
+  letter-spacing: 10px;
+  text-indent: 10px;
 }
 
 .bar {
