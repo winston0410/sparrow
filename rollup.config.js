@@ -5,10 +5,9 @@ const {
   nodeResolve
 } = require('@rollup/plugin-node-resolve')
 const commonjs = require('@rollup/plugin-commonjs')
-// const peerDepsExternal = require('rollup-plugin-peer-deps-external')
 
 export default [{
-  input: './index.js',
+  input: './src/index.js',
   output: [{
     file: 'dist/index.esm.js',
     format: 'esm',
@@ -38,8 +37,8 @@ export default [{
         ecma: 2019
       })
     ]
-  },
-],
+  }
+  ],
   plugins: [
     nodeResolve({}),
     commonjs({
