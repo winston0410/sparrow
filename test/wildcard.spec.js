@@ -42,7 +42,8 @@ describe('Test sparrow', function () {
   describe('if wildcard is used as selector', function () {
     describe('if inclusion is set to true', function () {
       it('should select and return all declarations', async function () {
-        const targetSelectors = ['body']
+        const spy = sinon.spy()
+        const targetSelectors = ['*']
 
         const options = {
           transformations: [
@@ -50,8 +51,7 @@ describe('Test sparrow', function () {
               selectors: targetSelectors,
               inclusion: true,
               callback: (decl) => {
-                // Check if decls are selected correctly
-                expect(targetSelectors).to.contains(decl.parent.selector)
+                spy()
               }
             }
           ]
@@ -62,10 +62,17 @@ describe('Test sparrow', function () {
         ])
           .process(css, {
             from: undefined
-          })// Need to get all decls in an array
-        // Use root.walkDecls
+          })
 
-        // console.log(result)
+        const declAmount = R.reduce(
+          (acc, value) => R.pipe(
+            R.prop('nodes'),
+            R.prop('length'),
+            R.add(acc)
+          )(value)
+        )(0)(result.root.nodes)
+
+        expect(spy.callCount).to.equal(declAmount)
       })
     })
 
@@ -85,7 +92,7 @@ describe('Test sparrow', function () {
           ]
         }
 
-        expect(spy.notCalled)
+        expect(spy.called).to.be.false
       })
     })
   })
