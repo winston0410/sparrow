@@ -3,13 +3,7 @@ const R = require('ramda')
 
 const {
   isArray,
-  isRegExp,
-  isBoolean,
-  isString,
-  fromNestedLoop,
-  mergeNodesBySelector,
-  ifOperationEqual,
-  transformDeclsByOperations
+  isBoolean
 } = require('./utilities/helper.js')
 
 const {
@@ -18,13 +12,6 @@ const {
   getSelectors,
   selectorsLens
 } = require('./utilities/selectors.js')
-
-const {
-  addComparatorFnToDecls,
-  getDeclsByPropAndValue,
-  getDecls,
-  getNewDecl
-} = require('./utilities/decls.js')
 
 const {
   nodesLens
@@ -48,19 +35,8 @@ module.exports = postcss.plugin('postcss-sparrow', ({
         decls: isArray
       })
     ),
-    addComparatorFnToSelectors,
-    addComparatorFnToDecls
+    addComparatorFnToSelectors
   )(options.transformations)
-
-  const transformDecls = (transformation) => (obj) => R.pipe(
-    getDecls,
-    R.map(
-      R.pipe(
-        getNewDecl,
-        transformDeclsByOperations(obj)
-      )
-    )
-  )(transformation)
 
   return (root, result) => {
     R.map(
@@ -72,10 +48,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
             R.prop('parent'),
             getNodesBySelectors(transformation)
           ),
-          R.when(
-            getDeclsByPropAndValue(transformation),
-            transformDecls(transformation)
-          )
+          R.tap(console.log)
         )(node)
 
         // console.log(result)
