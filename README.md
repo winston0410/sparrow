@@ -66,7 +66,7 @@ module.exports = {
 
 With the power of Sparrow, you can easily **filter selectors** and transform them using PostCSS Sparrow plugins. You do not need to write filter logic again for a PostCSS plugin. **Focus on transforming CSS** instead.
 
-Check out [all the examples here](https://github.com/winston0410/sparrow/blob/EXAMPLE.md).
+Check out [all PostCSS Sparrow plugins here](https://github.com/winston0410/sparrow/blob/EXAMPLE.md).
 
 ## Made in Hong Kong :free: :free:
 
