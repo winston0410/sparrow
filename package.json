@@ -7,6 +7,10 @@
     "css",
     "postcss-plugin"
   ],
+  "files": [
+    "src/",
+    "dist/"
+  ],
   "scripts": {
     "test": "npx nyc npx mocha",
     "build": "npx rollup -c;"
