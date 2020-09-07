@@ -14,13 +14,6 @@ const {
   selectorsLens
 } = require('../src/utilities/selectors.js')
 
-const {
-  addComparatorFnToDecls,
-  getDeclsByPropAndValue,
-  getDecls,
-  getNewDecl
-} = require('../src/utilities/decls.js')
-
 const R = require('ramda')
 const chai = require('chai')
 const expect = chai.expect
@@ -71,7 +64,19 @@ describe('Test sparrow', function () {
     })
 
     describe('if inclusion is set to false', function () {
-
+      it('should not select any declarations', async function () {
+        const options = {
+          transformations: [
+            {
+              selectors: ['*'],
+              inclusion: false,
+              callback: (x) => {
+                // Do transformation here
+              }
+            }
+          ]
+        }
+      })
     })
   })
 })
