@@ -18,13 +18,10 @@ const {
 } = require('./utilities/nodes.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
-  transformations,
-  silentConsole,
-  placeholderPattern
+  transformations
 }) => {
   const options = {
-    transformations: R.defaultTo([])(transformations),
-    placeholderPattern: R.defaultTo(/^\$\(\w*\)/g)(placeholderPattern)
+    transformations: R.defaultTo([])(transformations)
   }
 
   const validatedTransformations = R.pipe(
@@ -51,7 +48,9 @@ module.exports = postcss.plugin('postcss-sparrow', ({
           R.identity
         )(node)
 
-        // console.log(result)
+        return result
+
+        console.log(result)
       })
     )(validatedTransformations)
   }
