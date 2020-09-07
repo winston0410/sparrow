@@ -64,7 +64,9 @@ module.exports = {
 
 ## What can sparrow do for me?
 
-With the power of Sparrow, you can easily replace other PostCSS plugins. Check out [all the examples here](https://github.com/winston0410/sparrow/blob/EXAMPLE.md).
+With the power of Sparrow, you can easily **filter selectors** and transform them using PostCSS Sparrow plugins. You do not need to write filter logic again for a PostCSS plugin. **Focus on transforming CSS** instead.
+
+Check out [all the examples here](https://github.com/winston0410/sparrow/blob/EXAMPLE.md).
 
 ## Made in Hong Kong :free: :free:
 
@@ -83,4 +85,15 @@ npm i postcss-sparrow
 As this plugin requires PostCSS to parse your CSS first, you need to include it after plugins like [postcss-nested](https://www.npmjs.com/package/postcss-nested) or [postcss-mixins](https://www.npmjs.com/package/postcss-mixins).
 
 ## API Reference
-TODO
+
+### `options.selectors` : Array
+
+An array of selectors that you want to match with. Use `*` as wildcard and select all selectors.
+
+### `options.inclusion` : Boolean
+
+True for including and False for excluding selectors listed in `options.selectors`.
+
+### `options.callbacks` : Array
+
+An array of callbacks that you use to transform the selected declarations.
