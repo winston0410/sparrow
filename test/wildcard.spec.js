@@ -42,13 +42,16 @@ describe('Test sparrow', function () {
   describe('if wildcard is used as selector', function () {
     describe('if inclusion is set to true', function () {
       it('should select and return all declarations', async function () {
+        const targetSelectors = ['body']
+
         const options = {
           transformations: [
             {
-              selectors: ['body'],
+              selectors: targetSelectors,
               inclusion: true,
-              callback: (x) => {
-                console.log('hello world')
+              callback: (decl) => {
+                // Check if decls are selected correctly
+                expect(targetSelectors).to.contains(decl.parent.selector)
               }
             }
           ]
