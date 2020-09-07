@@ -36,7 +36,7 @@ describe('Test sparrow', function () {
             {
               selectors: targetSelectors,
               inclusion: true,
-              callback: [
+              callbacks: [
                 (decl) => {
                   spy()
                 }
@@ -73,7 +73,7 @@ describe('Test sparrow', function () {
             {
               selectors: ['*'],
               inclusion: false,
-              callback: [
+              callbacks: [
                 (x) => {
                   spy()
                 }

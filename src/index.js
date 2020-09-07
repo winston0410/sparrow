@@ -42,7 +42,7 @@ module.exports = postcss.plugin('postcss-sparrow', ({
             R.prop('parent'),
             getNodesBySelectors(transformation)
           ),
-          R.juxt(transformation.callback)
+          R.juxt(transformation.callbacks)
         )(decl)
       })
     )(validatedTransformations)
