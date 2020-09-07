@@ -52,15 +52,27 @@ describe('Test sparrow', function () {
   })
 
   describe('if wildcard is used as selector and inclusion is set to true', function () {
-    it('should select and return all declarations', function () {
+    it('should select and return all declarations', async function () {
       const options = {
         transformations: [
           {
             selectors: ['*'],
-            inclusion: true
+            inclusion: true,
+            callback: () => {
+
+            }
           }
         ]
       }
+
+      const result = await postcss([
+        sparrow(options)
+      ])
+        .process(css, {
+          from: undefined
+        })
+
+      console.log(result)
     })
   })
 
