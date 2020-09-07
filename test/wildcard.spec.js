@@ -16,9 +16,8 @@ const {
 
 const R = require('ramda')
 const chai = require('chai')
+const sinon = require('sinon')
 const expect = chai.expect
-chai.use(require('chai-match'))
-chai.use(require('chai-arrays'))
 
 describe('Test sparrow', function () {
   let css
@@ -34,6 +33,10 @@ describe('Test sparrow', function () {
     a{
       color: #be132d;
     }`
+  })
+
+  afterEach(function () {
+    sinon.restore()
   })
 
   describe('if wildcard is used as selector', function () {
