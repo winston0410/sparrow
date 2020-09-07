@@ -96,4 +96,4 @@ True for including and False for excluding selectors listed in `options.selector
 
 ### `options.callbacks` : Array
 
-An array of callbacks that you use to transform the selected declarations.
+An array of callbacks that you use to transform the selected declarations.  The selected declaration will be passed in as an argument.
