@@ -1,6 +1,6 @@
 {
   "name": "postcss-sparrow",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A PostCSS plugin that helps you remove, replace, append or prepend CSS declarations without the need of writing another PostCSS plugin.",
   "main": "src/index.js",
   "keywords": [
