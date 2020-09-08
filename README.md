@@ -31,7 +31,7 @@ module.exports = {
         {
           selectors: ['*'],
           inclusion: true,
-          callback: [
+          callbacks: [
             (decl) => {
               //Decl is the declaration object selected based on your options.
               //Do transformation to decl here
