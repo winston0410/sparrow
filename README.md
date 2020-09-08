@@ -40,7 +40,7 @@ module.exports = {
               }
             },
             //You can also import plugins here
-            require("postcss-sparrow-auto-text-indent").default  
+            require("postcss-sparrow-auto-text-indent")
           ]
         }
       ]
