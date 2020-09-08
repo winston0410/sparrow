@@ -42,47 +42,10 @@ const fromNestedLoop = (fn) => R.map(
   )
 )
 
-const notEqualNegativeOne = R.complement(R.equals)(-1)
-
-const rejectNegativeResult = R.reject(
-  R.equals(-1)
-)
-
-const ifMatchingResultFound = R.when(
-  notEqualNegativeOne
-)
-
-const ifEmptyResult = R.ifElse(
-  R.isEmpty
-)
-
 const ifOperationEqual = (operation) => R.pipe(
   R.prop('operation'),
   R.equals(operation)
 )
-
-const declToString = R.curry(
-  (prop, value) => `${prop}: ${value}`
-)
-
-const convertDeclToString = R.converge(declToString, [R.prop('prop'), R.prop('value')])
-
-const transformDeclsByOperations = (obj) => R.cond([
-  [ifOperationEqual('replace'), R.pipe(
-    convertDeclToString,
-    (v) => obj.replaceWith(v)
-  )],
-  [ifOperationEqual('remove'), R.pipe(
-    (v) => obj.remove()
-  )],
-  [ifOperationEqual('before'), R.pipe(
-    convertDeclToString,
-    (v) => obj.before(v)
-  )]
-  // [ifOperationEqual('custom'), R.pipe(
-  //   () => console.log('You are using custom logic on this node')
-  // )]
-])
 
 module.exports = {
   isArray,
@@ -93,6 +56,5 @@ module.exports = {
   shouldIncludeOrExclude,
   ifHasWildCard,
   fromNestedLoop,
-  ifOperationEqual,
-  transformDeclsByOperations
+  ifOperationEqual
 }
