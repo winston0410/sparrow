@@ -8,14 +8,8 @@ const {
 
 const {
   addComparatorFnToSelectors,
-  getNodesBySelectors,
-  getSelectors,
-  selectorsLens
+  getNodesBySelectors
 } = require('./utilities/selectors.js')
-
-const {
-  nodesLens
-} = require('./utilities/nodes.js')
 
 module.exports = postcss.plugin('postcss-sparrow', ({
   transformations
