@@ -28,7 +28,7 @@ const shouldIncludeOrExclude = R.ifElse(
   R.propEq('inclusion', true)
 )
 
-const hasWildCard = R.includes('*')
+const hasWildCard = R.contains('*')
 
 const ifHasWildCard = R.ifElse(
   hasWildCard
