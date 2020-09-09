@@ -1,6 +1,4 @@
-const postcss = require('postcss')
 const R = require('ramda')
-const chalk = require('chalk')
 
 const isCorrectType = (type) => R.is(type)
 
