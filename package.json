@@ -13,6 +13,7 @@
     "dist/"
   ],
   "scripts": {
+    "prepublish": "npm run build",
     "test": "npx nyc npx mocha",
     "build": "npx rollup -c;"
   },
