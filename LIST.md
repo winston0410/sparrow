@@ -13,3 +13,7 @@ A PostCSS Sparrow plugin that helps you append text-indent to a selector when le
 ### [PostCSS Sparrow Units Filter](https://www.npmjs.com/package/postcss-sparrow-units-filter)
 
 A PostCSS Sparrow plugin that helps you **search CSS declarations** by **units**.
+
+### [PostCSS Sparrow Props Filter](https://www.npmjs.com/package/postcss-sparrow-props-filter)
+
+A PostCSS Sparrow plugin that helps you **search CSS declarations** by **properties**.
