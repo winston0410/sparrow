@@ -20,8 +20,8 @@
   "author": "Hugo Sum <hugosum.dev@protonmail.com>",
   "license": "MIT",
   "repository": "winston0410/sparrow",
-  "dependencies": {
-    "postcss": "^7.0.32"
+  "peerDependencies": {
+    "postcss": "^8.0.0"
   },
   "devDependencies": {
     "@logux/eslint-config": "^40.0.3",
