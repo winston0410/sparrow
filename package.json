@@ -21,7 +21,7 @@
   "license": "MIT",
   "repository": "winston0410/sparrow",
   "peerDependencies": {
-    "postcss": "^8.0.0"
+    "postcss": "^8.0.3"
   },
   "devDependencies": {
     "@logux/eslint-config": "^40.0.4",
