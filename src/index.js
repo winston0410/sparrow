@@ -11,7 +11,7 @@ const {
   getNodesBySelectors
 } = require('./utilities/selectors.js')
 
-module.exports = postcss.plugin('postcss-sparrow', ({
+module.exports = ({
   transformations
 }) => {
   const options = {
@@ -29,17 +29,21 @@ module.exports = postcss.plugin('postcss-sparrow', ({
     addComparatorFnToSelectors
   )(options.transformations)
 
-  return (root, result) => {
-    R.map(
-      (transformation) => root.walkDecls((decl) => {
-        const result = R.when(
-          R.pipe(
-            R.prop('parent'),
-            getNodesBySelectors(transformation)
-          ),
-          R.juxt(transformation.callbacks)
-        )(decl)
-      })
-    )(validatedTransformations)
+  return {
+    postcssPlugin: 'postcss-sparrow',
+    Root (root, result) {
+      R.map(
+        (transformation) => root.walkDecls((decl) => {
+          const result = R.when(
+            R.pipe(
+              R.prop('parent'),
+              getNodesBySelectors(transformation)
+            ),
+            R.juxt(transformation.callbacks)
+          )(decl)
+        })
+      )(validatedTransformations)
+    }
   }
-})
+}
+module.exports.postcss = true
