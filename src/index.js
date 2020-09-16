@@ -1,4 +1,3 @@
-const postcss = require('postcss')
 const R = require('ramda')
 
 const {
@@ -31,17 +30,15 @@ module.exports = ({
 
   return {
     postcssPlugin: 'postcss-sparrow',
-    Root (root, result) {
+    Declaration (decl) {
       R.map(
-        (transformation) => root.walkDecls((decl) => {
-          const result = R.when(
-            R.pipe(
-              R.prop('parent'),
-              getNodesBySelectors(transformation)
-            ),
-            R.juxt(transformation.callbacks)
-          )(decl)
-        })
+        (transformation) => R.when(
+          R.pipe(
+            R.prop('parent'),
+            getNodesBySelectors(transformation)
+          ),
+          R.juxt(transformation.callbacks)
+        )(decl)
       )(validatedTransformations)
     }
   }
