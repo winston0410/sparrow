@@ -12,6 +12,10 @@ A PostCSS Sparrow plugin that helps you append text-indent to a selector when le
 
 A PostCSS Sparrow plugin that helps you add the new experimental CSS declaration, `content-visibility: auto` to any selectors for boosting render performance.
 
+### [Be water](https://www.npmjs.com/package/bewater)
+
+A PostCSS plugin that helps you automatically apply `clamp()` to values to achieve a fluid design efficently.
+
 ## Declarations filtering
 
 ### [PostCSS Sparrow Units Filter](https://www.npmjs.com/package/postcss-sparrow-units-filter)
