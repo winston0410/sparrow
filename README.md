@@ -99,3 +99,8 @@ True for including and False for excluding selectors listed in `options.selector
 ### `options.callbacks` : Array
 
 An array of callbacks that you use to transform the selected declarations.  The selected declaration will be passed in as an argument.
+
+## Breaking changes
+
+### V1.0.0
+PostCSS Sparrow has upgraded its code for PostCSS 8.  It will not be compatible with any version lower than 8.0.0.
