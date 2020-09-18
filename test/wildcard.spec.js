@@ -82,6 +82,13 @@ describe('Test sparrow', function () {
           ]
         }
 
+        const result = await postcss([
+          sparrow(options)
+        ])
+          .process(css, {
+            from: undefined
+          })
+
         expect(spy.called).to.be.false
       })
     })
