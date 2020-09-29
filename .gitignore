@@ -63,6 +63,19 @@ typings/
 # OSX
 .DS_Store
 
+# Purescript
+output
+purescript
+.spago
+.psci_modules
+.purs-repl
+
+# Purescript IDE
+.psc-ide-port
+
+# Ignore purescript output
+_*.js
+
 # Dist
 dist
 
