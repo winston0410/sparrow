@@ -28,7 +28,7 @@ module.exports = {
     //Other plugins...
 
     require('postcss-sparrow')({
-      declarations: [
+      transformations: [
         {
           selectors: ['*'],
           inclusion: true,
