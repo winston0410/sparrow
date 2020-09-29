@@ -6,7 +6,6 @@
 
 A PostCSS plugin that helps you **search CSS declarations** by **selectors**. Avoid the hassle of reinventing the wheel and filter selectors you want again when you create a new PostCSS plugin.
 
-
 ```css
 /* Original Input */
 .foo {
@@ -29,7 +28,7 @@ module.exports = {
     //Other plugins...
 
     require('postcss-sparrow')({
-      transformations: [
+      declarations: [
         {
           selectors: ['*'],
           inclusion: true,
@@ -98,9 +97,10 @@ True for including and False for excluding selectors listed in `options.selector
 
 ### `options.callbacks` : Array
 
-An array of callbacks that you use to transform the selected declarations.  The selected declaration will be passed in as an argument.
+An array of callbacks that you use to transform the selected declarations. The selected declaration will be passed in as an argument.
 
 ## Breaking changes
 
 ### V1.0.0
-PostCSS Sparrow has upgraded its code for PostCSS 8.  It will not be compatible with any version lower than 8.0.0.
+
+PostCSS Sparrow has upgraded its code for PostCSS 8\. It will not be compatible with any version lower than 8.0.0.
