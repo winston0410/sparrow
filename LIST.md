@@ -14,7 +14,11 @@ A PostCSS Sparrow plugin that helps you add the new experimental CSS declaration
 
 ### [Be water](https://www.npmjs.com/package/bewater)
 
-A PostCSS plugin that helps you automatically apply `clamp()` to values to achieve a fluid design efficently.
+A PostCSS Sparrow plugin that helps you automatically apply `clamp()` to values to achieve a fluid design efficently.
+
+### [PostCSS Sparrow Clamp Fallback](https://www.npmjs.com/package/postcss-sparrow-clamp-fallback)
+
+A PostCSS Sparrow plugin that creates fallback of `clamp()`` for you.
 
 ## Declarations filtering
 
