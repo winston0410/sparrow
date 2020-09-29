@@ -30,6 +30,12 @@ module.exports = ({
 
   return {
     postcssPlugin: 'postcss-sparrow',
+    AtRule (atRule) {
+
+    },
+    Rule (rule) {
+
+    },
     Declaration (decl) {
       R.map(
         (transformation) => R.when(
