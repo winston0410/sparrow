@@ -21,14 +21,11 @@ module.exports = ({
     rules: R.defaultTo([])(rules)
   }
 
-  const validatedTransformations = R.pipe(
-    R.filter(
-      R.where({
-        selectors: isArray,
-        inclusion: isBoolean,
-        callbacks: isArray
-      })
-    ),
+  // const rulesTransformations = R.pipe(
+  //   addComparatorFnToSelectors
+  // )(options.rules)
+
+  const declarationsTransformations = R.pipe(
     addComparatorFnToSelectors
   )(options.declarations)
 
@@ -49,7 +46,7 @@ module.exports = ({
           ),
           R.juxt(transformation.callbacks)
         )(decl)
-      )(validatedTransformations)
+      )(declarationsTransformations)
     }
   }
 }
