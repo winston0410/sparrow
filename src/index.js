@@ -11,10 +11,14 @@ const {
 } = require('./utilities/selectors.js')
 
 module.exports = ({
-  declarations
+  declarations,
+  atRules,
+  rules
 }) => {
   const options = {
-    declarations: R.defaultTo([])(declarations)
+    declarations: R.defaultTo([])(declarations),
+    atRules: R.defaultTo([])(atRules),
+    rules: R.defaultTo([])(rules)
   }
 
   const validatedTransformations = R.pipe(
