@@ -32,7 +32,7 @@ describe('Test sparrow', function () {
         const targetSelectors = ['*']
 
         const options = {
-          transformations: [
+          declarations: [
             {
               selectors: targetSelectors,
               inclusion: true,
@@ -69,7 +69,7 @@ describe('Test sparrow', function () {
         const spy = sinon.spy()
 
         const options = {
-          transformations: [
+          declarations: [
             {
               selectors: ['*'],
               inclusion: false,

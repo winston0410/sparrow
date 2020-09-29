@@ -11,10 +11,10 @@ const {
 } = require('./utilities/selectors.js')
 
 module.exports = ({
-  declaration
+  declarations
 }) => {
   const options = {
-    declaration: R.defaultTo([])(declaration)
+    declarations: R.defaultTo([])(declarations)
   }
 
   const validatedTransformations = R.pipe(
@@ -26,7 +26,7 @@ module.exports = ({
       })
     ),
     addComparatorFnToSelectors
-  )(options.declaration)
+  )(options.declarations)
 
   return {
     postcssPlugin: 'postcss-sparrow',
