@@ -34,7 +34,7 @@ module.exports = ({
 
     },
     Rule (rule) {
-
+      console.log(rule)
     },
     Declaration (decl) {
       R.map(
