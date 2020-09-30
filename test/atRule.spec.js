@@ -16,9 +16,12 @@ describe('atRule filtering', function () {
       font-family: "PingFangTC-Semibold"
     }
 
-    a{
-      color: #be132d;
-    }`
+    @media (min-width: 920px) {
+      body{
+        padding: 10px;
+      }
+    }
+    `
   })
 
   afterEach(function () {
