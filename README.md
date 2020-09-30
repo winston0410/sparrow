@@ -4,7 +4,7 @@
 
 ![Cover image for PostCSS Sparrow](./cover.jpg)
 
-A PostCSS plugin that helps you **search CSS declarations** by **selectors**. Avoid the hassle of reinventing the wheel and filter selectors you want again when you create a new PostCSS plugin.
+A PostCSS plugin that helps you **search CSS declarations and rules** by **selectors**. Avoid the hassle of reinventing the wheel and filter selectors you want again when you create a new PostCSS plugin.
 
 ```css
 /* Original Input */
@@ -28,7 +28,7 @@ module.exports = {
     //Other plugins...
 
     require('postcss-sparrow')({
-      transformations: [
+      declarations: [
         {
           selectors: ['*'],
           inclusion: true,
@@ -87,15 +87,35 @@ As this plugin requires PostCSS to parse your CSS first, you need to include it 
 
 ## API Reference
 
-### `options.selectors` : Array
+### `options.rules`
+
+For matching CSS Rules. E.g. `a{}`.
+
+#### `options.rules.selectors` : Array
 
 An array of selectors that you want to match with. Use `*` as wildcard and select all selectors.
 
-### `options.inclusion` : Boolean
+#### `options.rules.inclusion` : Boolean
 
 True for including and False for excluding selectors listed in `options.selectors`.
 
-### `options.callbacks` : Array
+#### `options.rules.callbacks` : Array
+
+An array of callbacks that you use to transform the selected declarations. The selected declaration will be passed in as an argument.
+
+### `options.declarations`
+
+For matching CSS Declarations. E.g. `font-size: 18px;`.
+
+#### `options.declarations.selectors` : Array
+
+An array of selectors that you want to match with. Use `*` as wildcard and select all selectors.
+
+#### `options.declarations.inclusion` : Boolean
+
+True for including and False for excluding selectors listed in `options.selectors`.
+
+#### `options.declarations.callbacks` : Array
 
 An array of callbacks that you use to transform the selected declarations. The selected declaration will be passed in as an argument.
 
@@ -104,3 +124,7 @@ An array of callbacks that you use to transform the selected declarations. The s
 ### V1.0.0
 
 PostCSS Sparrow has upgraded its code for PostCSS 8\. It will not be compatible with any version lower than 8.0.0.
+
+### V2.0.0
+
+PostCSS Sparrow now filter for **Declarations**, **Rules** and **AtRules**. Therefore, `options.transformations` which originally used for filtering declarations is renamed to `options.declarations`.
