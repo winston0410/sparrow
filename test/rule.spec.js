@@ -52,15 +52,9 @@ describe('Rule filtering', function () {
             from: undefined
           })
 
-        const declAmount = R.reduce(
-          (acc, value) => R.pipe(
-            R.prop('nodes'),
-            R.prop('length'),
-            R.add(acc)
-          )(value)
-        )(0)(result.root.nodes)
+        const declAmount = result.root.nodes.length
 
-        // expect(spy.callCount).to.equal(declAmount)
+        expect(spy.callCount).to.equal(declAmount)
       })
     })
   })

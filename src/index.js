@@ -16,9 +16,9 @@ module.exports = ({
     rules: R.defaultTo([])(rules)
   }
 
-  // const rulesTransformations = R.pipe(
-  //   addComparatorFnToSelectors
-  // )(options.rules)
+  const rulesTransformations = R.pipe(
+    addComparatorFnToSelectors
+  )(options.rules)
 
   const declarationsTransformations = R.pipe(
     addComparatorFnToSelectors
@@ -30,7 +30,14 @@ module.exports = ({
       // console.log(atRule)
     },
     Rule (rule) {
-      // console.log(rule)
+      R.map(
+        (transformation) => R.when(
+          R.pipe(
+            getNodesBySelectors(transformation)
+          ),
+          R.juxt(transformation.callbacks)
+        )(rule)
+      )(rulesTransformations)
     },
     Declaration (decl) {
       R.map(
