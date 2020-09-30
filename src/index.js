@@ -27,10 +27,10 @@ module.exports = ({
   return {
     postcssPlugin: 'postcss-sparrow',
     AtRule (atRule) {
-      console.log(atRule)
+      // console.log(atRule)
     },
     Rule (rule) {
-      console.log(rule)
+      // console.log(rule)
     },
     Declaration (decl) {
       R.map(

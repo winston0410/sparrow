@@ -28,7 +28,39 @@ describe('Rule filtering', function () {
   describe('if wildcard is used', function () {
     describe('if inclusion is set to true', function () {
       it('should select and return all rules', async function () {
+        const spy = sinon.spy()
+        const targetSelectors = ['*']
 
+        const options = {
+          rules: [
+            {
+              selectors: targetSelectors,
+              inclusion: true,
+              callbacks: [
+                (decl) => {
+                  spy()
+                }
+              ]
+            }
+          ]
+        }
+
+        const result = await postcss([
+          sparrow(options)
+        ])
+          .process(css, {
+            from: undefined
+          })
+
+        const declAmount = R.reduce(
+          (acc, value) => R.pipe(
+            R.prop('nodes'),
+            R.prop('length'),
+            R.add(acc)
+          )(value)
+        )(0)(result.root.nodes)
+
+        // expect(spy.callCount).to.equal(declAmount)
       })
     })
   })
