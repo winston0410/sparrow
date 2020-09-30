@@ -1,11 +1,6 @@
 const R = require('ramda')
 
 const {
-  isArray,
-  isBoolean
-} = require('./utilities/helper.js')
-
-const {
   addComparatorFnToSelectors,
   getNodesBySelectors
 } = require('./utilities/selectors.js')
@@ -32,7 +27,7 @@ module.exports = ({
   return {
     postcssPlugin: 'postcss-sparrow',
     AtRule (atRule) {
-
+      console.log(atRule)
     },
     Rule (rule) {
       console.log(rule)
